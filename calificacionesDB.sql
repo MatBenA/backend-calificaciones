@@ -28,7 +28,7 @@ CREATE TABLE USUARIO
   nickname VARCHAR(80) NOT NULL,
   id_usuario INT NOT NULL auto_increment,
   id_rol INT NOT NULL,
-  id_curso INT NOT NULL,
+  id_curso INT,
   PRIMARY KEY (id_usuario),
   FOREIGN KEY (id_rol) REFERENCES ROL(id_rol),
   FOREIGN KEY (id_curso) REFERENCES CURSO(id_curso)
@@ -43,3 +43,7 @@ CREATE TABLE cursa
   FOREIGN KEY (id_materia) REFERENCES MATERIA(id_materia),
   FOREIGN KEY (id_usuario) REFERENCES USUARIO(id_usuario)
 );
+
+INSERT INTO ROL (nombre) VALUES ("admin");
+INSERT INTO ROL (nombre) VALUES ("estudiante");
+INSERT INTO ROL (nombre) VALUES ("profesor");
