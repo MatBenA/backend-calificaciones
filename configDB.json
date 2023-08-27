@@ -1,0 +1,11 @@
+{
+    "database": {
+        "host": "localhost",
+        "user": "root",
+        "password": "chepe<<",
+        "database": "CALIFICACIONES"
+    },
+    "server": {
+        "port": 3000
+    }
+}
