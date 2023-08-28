@@ -3,7 +3,7 @@
 
 //configuracion inicial
 const mysql = require("mysql");
-const config = require("../configDB.json");
+const config = require("../configDB");
 
 //Se inicia la coneccion con la base de datos
 const connection = mysql.createConnection(config.database);

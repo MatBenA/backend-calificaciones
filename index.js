@@ -3,11 +3,11 @@ const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-const config = require("./configDB.json"); //configuracion de la base de datos
+const config = require("./configDB"); //configuracion de la base de datos
 
 /*importamos los controladores que recibirán las solicitudes
 del cliente y enviarán resultados*/
-const materiaController = require("./controller/materiaController.js");
+const materiaController = require("./controller/materiaController");
 
 //ejecutamos los controladores
 app.use(materiaController);
