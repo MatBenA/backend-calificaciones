@@ -2,7 +2,7 @@
 //la base de datos y de la logica para enviar estos datos
 
 //configuracion inicial
-const mysql = require("mysql");
+const mysql = require("mysql2");
 const config = require("../configDB");
 
 //Se inicia la conexion con la base de datos
@@ -25,8 +25,8 @@ const usuariosDB = {};
 //crear 
 
 usuariosDB.crear = function (datos, resultado) {
-    consulta = "INSERT INTO usuario (password, email, nickname, id_usuario, id_rol , id_curso ) VALUES (?,?,?,?,?,?);";
-    params = [datos.password, datos.email, datos.nickname, datos.id_usuario, datos.id_rol , datos.id_curso];
+    consulta = "INSERT INTO usuario (password, email, nickname,  id_rol , id_curso ) VALUES (?,?,?,?,?);";
+    params = [datos.password, datos.email, datos.nickname, datos.id_rol , datos.id_curso];
 
     connection.query(consulta, params, (err, rows) => {
         if (err) {
@@ -70,8 +70,8 @@ usuariosDB.getAll = function (resultado) {
 //actualizar
 
 usuariosDB.actualizar = function (datos, id, retorno) {
-    consulta = "UPDATE persona SET password = ?, email= ?, nickname= ?, id_usuario= ?, id_rol= ? , id_curso= ? WHERE id_usuario = ?";
-    params = [datos.password, datos.email, datos.nickname, datos.id_usuario, datos.id_rol , datos.id_curso, id];
+    consulta = "UPDATE usuario SET password = ?, email= ?, nickname= ?,  id_rol= ? , id_curso= ? WHERE id_usuario = ?";
+    params = [datos.password, datos.email, datos.nickname,  datos.id_rol , datos.id_curso, id];
 
     connection.query(consulta, params, (err, result) => {
 
@@ -100,8 +100,9 @@ usuariosDB.actualizar = function (datos, id, retorno) {
 //borrar 
 
 usuariosDB.borrar = function (id, resultado) {
-    consulta = "DELETE FROM persona WHERE id_usuario = ?";
-    connection.query(consulta, id, (err, result) => {
+   
+   
+    connection.query("DELETE FROM usuario WHERE id_usuario = ? ", id, (err, result) => {
         if (err) {
             resultado({ menssage: err.code, detail: err });
         } else {
@@ -112,7 +113,7 @@ usuariosDB.borrar = function (id, resultado) {
                         detail: result
                     });
             } else {
-                resultado(undefined, { message: "Usuario eliminada", detail: result });
+                resultado(undefined, { message: "Usuario eliminado", detail: result });
             }
         }
     });

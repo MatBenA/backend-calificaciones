@@ -7,8 +7,8 @@ const config = require("./configDB"); //configuracion de la base de datos
 
 /*importamos los controladores que recibirán las solicitudes
 del cliente y enviarán resultados*/
-const materiaController = require("controller/materiaController.js");
-const usuariosController = require("controller/usuariosController.js");
+const materiaController = require("./controller/materiaController");
+const usuariosController = require("./controller/usuariosController");
 //ejecutamos los controladores
 app.use("/api/materia" , materiaController);
 app.use("/api/usuarios",usuariosController);

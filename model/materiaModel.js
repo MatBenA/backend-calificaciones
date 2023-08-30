@@ -2,7 +2,7 @@
 //la base de datos y de la logica para enviar estos datos
 
 //configuracion inicial
-const mysql = require("mysql");
+const mysql = require("mysql2");
 const config = require("../configDB");
 
 //Se inicia la coneccion con la base de datos
@@ -20,6 +20,7 @@ connection.connect((err) => {
 const materiaDB = {};
 
 //aca deben ir los métodos para interactuar con la base de datos
+
 
 //se exporta el objeto materiaDB con todos sus métodos para ser usado en el controlador
 module.exports = materiaDB;

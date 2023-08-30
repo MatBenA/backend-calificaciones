@@ -7,16 +7,16 @@ const express = require("express");
 const app = express();
 
 //importacion de los métodos del modelo persona que se encargará de interactuar con la base de datos
-const alumnosDB = require("model/usuariosModel.js");
-const usuariosDB = require("../model/usuariosModel");
+
+const usuariosDB = require("../model/usuariosModel.js");
 
 //se exporta app para que pueda ser utilizada en el index
 module.exports = app;
 
 app.get('/', getAll);
 app.post('/', crear);
-app.put('/:dni', actualizar);
-app.delete('/:dni', borrar);
+app.put('/:id_usuario', actualizar);
+app.delete('/:id_usuario', borrar);
 
 
 
@@ -60,8 +60,8 @@ function actualizar(req, res) {
 
 
 function borrar(req, res) {
-    let id_user = req.params.id_usuario;
-   usuariosDB.borrar(id_user, (err, resultado) => {
+    let usuario_eliminar = req.params.id_usuario;
+   usuariosDB.borrar(usuario_eliminar, (err, resultado) => {
         if (err) {
             res.status(500).send(err);
         } else {
