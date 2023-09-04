@@ -20,7 +20,23 @@ connection.connect((err) => {
 const materiaDB = {};
 
 //aca deben ir los métodos para interactuar con la base de datos
-
+materiaDB.create = function (materiaData, callBack) {
+    const request = "INSERT INTO materia (nombre) VALUES (?);";
+    connection.query(request, materiaData.nombre, (err, result) => {
+        if (err) {
+            if (err.code === "ER_DUP_ENTRY") {
+                callBack("Ya existe una materia con esta ID");
+            } else {
+                callBack(err);
+            }
+        } else {
+            callBack(undefined, {
+                message: "Se agregó la materia correctamente",
+                detail: result,
+            });
+        }
+    });
+};
 
 //se exporta el objeto materiaDB con todos sus métodos para ser usado en el controlador
 module.exports = materiaDB;

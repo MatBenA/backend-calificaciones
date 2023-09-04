@@ -13,13 +13,10 @@ const usuariosDB = require("../model/usuariosModel.js");
 //se exporta app para que pueda ser utilizada en el index
 module.exports = app;
 
-app.get('/api/usuarios', getAll);
-app.post('/api/usuarios', crear);
-app.put('/api/usuarios/:id_usuario', actualizar);
-app.delete('api/usuarios/:id_usuario', borrar);
-
-
-
+app.get("/api/usuarios", getAll);
+app.post("/api/usuarios", crear);
+app.put("/api/usuarios/:id_usuario", actualizar);
+app.delete("api/usuarios/:id_usuario", borrar);
 
 function getAll(req, res) {
     usuariosDB.getAll(function (err, resultado) {
@@ -31,8 +28,6 @@ function getAll(req, res) {
     });
 }
 
-
-
 function crear(req, res) {
     let user = req.body;
     usuariosDB.crear(user, (err, resultado) => {
@@ -43,7 +38,6 @@ function crear(req, res) {
         }
     });
 }
-
 
 function actualizar(req, res) {
     let user = req.body;
@@ -57,11 +51,9 @@ function actualizar(req, res) {
     });
 }
 
-
-
 function borrar(req, res) {
     let usuario_eliminar = req.params.id_usuario;
-   usuariosDB.borrar(usuario_eliminar, (err, resultado) => {
+    usuariosDB.borrar(usuario_eliminar, (err, resultado) => {
         if (err) {
             res.status(500).send(err);
         } else {

@@ -14,10 +14,10 @@ app.use(materiaController);
 app.use(usuariosController);
 
 //a la escucha de solicitudes en el puerto configurado
-app.listen(config.server.port, err => {
-    if(err){
+app.listen(config.server.port, (err) => {
+    if (err) {
         console.log(err);
-    }else {
+    } else {
         console.log(`Escuchando en el puerto ${config.server.port}`);
     }
 });

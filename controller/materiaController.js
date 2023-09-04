@@ -9,7 +9,15 @@ const app = express();
 //importacion de los métodos del modelo persona que se encargará de interactuar con la base de datos
 const materiaDB = require("../model/materiaModel");
 
-app.post("/")
+app.post("/api/materia", (req, res) => {
+    materiaDB.create(req.body, (err, result) => {
+        if (err) {
+            res.status(500).send(err);
+        }else{
+            res.send(result)
+        }
+    });
+});
 
 //se exporta app para que pueda ser utilizada en el index
 module.exports = app;
