@@ -13,10 +13,10 @@ const usuariosDB = require("../model/usuariosModel.js");
 //se exporta app para que pueda ser utilizada en el index
 module.exports = app;
 
-app.get('/', getAll);
-app.post('/', crear);
-app.put('/:id_usuario', actualizar);
-app.delete('/:id_usuario', borrar);
+app.get('/api/usuarios', getAll);
+app.post('/api/usuarios', crear);
+app.put('/api/usuarios/:id_usuario', actualizar);
+app.delete('api/usuarios/:id_usuario', borrar);
 
 
 

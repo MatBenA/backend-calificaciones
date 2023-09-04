@@ -119,10 +119,4 @@ usuariosDB.borrar = function (id, resultado) {
     });
 }
 
-
-
-
-
-
-
 module.exports = usuariosDB;
