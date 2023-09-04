@@ -13,8 +13,18 @@ app.post("/api/materia", (req, res) => {
     materiaDB.create(req.body, (err, result) => {
         if (err) {
             res.status(500).send(err);
-        }else{
-            res.send(result)
+        } else {
+            res.send(result);
+        }
+    });
+});
+
+app.get("/api/materia", (req, res) => {
+    materiaDB.getAll((err, result) => {
+        if (err) {
+            res.status(500).send(err);
+        } else {
+            res.send(result);
         }
     });
 });

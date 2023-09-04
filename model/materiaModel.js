@@ -38,5 +38,16 @@ materiaDB.create = function (materiaData, callBack) {
     });
 };
 
+materiaDB.getAll = function (callBack) {
+    const request = "SELECT * FROM materia";
+    connection.query(request, (err, result) => {
+        if (err) {
+            callBack(err);
+        } else {
+            callBack(undefined, result);
+        }
+    });
+};
+
 //se exporta el objeto materiaDB con todos sus métodos para ser usado en el controlador
 module.exports = materiaDB;
