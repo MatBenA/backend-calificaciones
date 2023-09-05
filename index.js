@@ -8,17 +8,16 @@ const config = require("./configDB"); //configuracion de la base de datos
 /*importamos los controladores que recibirán las solicitudes
 del cliente y enviarán resultados*/
 const materiaController = require("./controller/materiaController");
-const usuariosController = require("./controller/usuariosController");  
-const cursaController = require("./controller/cursaController");  
+const usuariosController = require("./controller/usuariosController");
 //ejecutamos los controladores
 app.use("/api/materia" , materiaController);
 app.use("/api/usuarios",usuariosController);
-app.use("/api/cursa",cursaController);
+
 //a la escucha de solicitudes en el puerto configurado
-app.listen(config.server.port, err => {
-    if(err){
+app.listen(config.server.port, (err) => {
+    if (err) {
         console.log(err);
-    }else {
+    } else {
         console.log(`Escuchando en el puerto ${config.server.port}`);
     }
 });
