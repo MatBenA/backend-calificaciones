@@ -49,7 +49,7 @@ materiaDB.getAll = function (callBack) {
     });
 };
 
-materiaDB.delete= function (id_materia, callBack) {
+materiaDB.delete = function (id_materia, callBack) {
     const request = "DELETE FROM materia WHERE id_materia = ?;";
     connection.query(request, id_materia, (err, result) => {
         if (err) {
@@ -62,6 +62,25 @@ materiaDB.delete= function (id_materia, callBack) {
         } else {
             callBack(undefined, {
                 message: "Materia eliminada",
+                detail: result,
+            });
+        }
+    });
+};
+
+materiaDB.update = function (id_materia, newName, callBack) {
+    const request = "UPDATE materia SET nombre = ? WHERE id_materia = ?;";
+    connection.query(request, [newName.nombre, id_materia], (err, result) => {
+        if (err) {
+            callBack(err);
+        } else if (result.affectedRows === 0) {
+            callBack(undefined, {
+                message: "No existe materia con este ID",
+                detail: result,
+            });
+        } else {
+            callBack(undefined, {
+                message: "Se actualizó la materia",
                 detail: result,
             });
         }
