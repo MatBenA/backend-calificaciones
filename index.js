@@ -9,9 +9,11 @@ const config = require("./configDB"); //configuracion de la base de datos
 del cliente y enviarán resultados*/
 const materiaController = require("./controller/materiaController");
 const usuariosController = require("./controller/usuariosController");
+const cursoController = require("./controller/cursoController");
 //ejecutamos los controladores
 app.use(materiaController);
 app.use(usuariosController);
+app.use(cursoController);
 
 //a la escucha de solicitudes en el puerto configurado
 app.listen(config.server.port, (err) => {

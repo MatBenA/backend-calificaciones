@@ -2,11 +2,10 @@
 //de recibir solicitudes y enviar respuestas
 
 //configuracion inicial
-// require("rootpath")();
 const express = require("express");
 const app = express();
 
-//importacion de los métodos del modelo persona que se encargará de interactuar con la base de datos
+//importacion de los métodos del modelo materia que se encargará de interactuar con la base de datos
 const materiaDB = require("../model/materiaModel");
 
 app.post("/api/materia", (req, res) => {
