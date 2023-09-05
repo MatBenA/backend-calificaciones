@@ -49,5 +49,24 @@ materiaDB.getAll = function (callBack) {
     });
 };
 
+materiaDB.delete= function (id_materia, callBack) {
+    const request = "DELETE FROM materia WHERE id_materia = ?;";
+    connection.query(request, id_materia, (err, result) => {
+        if (err) {
+            callBack(err);
+        } else if (result.affectedRows === 0) {
+            callBack(undefined, {
+                message: "No se encontró materia con este ID",
+                detail: result,
+            });
+        } else {
+            callBack(undefined, {
+                message: "Materia eliminada",
+                detail: result,
+            });
+        }
+    });
+};
+
 //se exporta el objeto materiaDB con todos sus métodos para ser usado en el controlador
 module.exports = materiaDB;

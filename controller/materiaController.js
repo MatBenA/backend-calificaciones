@@ -29,5 +29,17 @@ app.get("/api/materia", (req, res) => {
     });
 });
 
+app.delete("/api/materia/:id_materia", (req, res) => {
+    materiaDB.delete(req.params.id_materia, (err, result) => {
+        if (err) {
+            res.status(500).send(err);
+        } else if (result.detail.affectedRows === 0) {
+            res.status(404).send(result.message);
+        } else {
+            res.send(result);
+        }
+    });
+});
+
 //se exporta app para que pueda ser utilizada en el index
 module.exports = app;
