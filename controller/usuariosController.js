@@ -16,7 +16,7 @@ module.exports = app;
 app.get("/api/usuarios", getAll);
 app.post("/api/usuarios", crear);
 app.put("/api/usuarios/:id_usuario", actualizar);
-app.delete("api/usuarios/:id_usuario", borrar);
+app.delete("/api/usuarios/:id_usuario", borrar);
 
 function getAll(req, res) {
     usuariosDB.getAll(function (err, resultado) {

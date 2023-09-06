@@ -13,10 +13,10 @@ const cursaDB = require("../model/cursaModel.js");
 //se exporta app para que pueda ser utilizada en el index
 module.exports = app;
 
-app.get('/', getAll);
-app.post('/', crear);
-app.put('/:id_usuario/:id_materia', actualizar);
-app.delete('/:id_usuario/:id_materia', borrar);
+app.get('/api/cursa', getAll);
+app.post('/api/cursa', crear);
+app.put('/api/cursa/:id_usuario/:id_materia', actualizar);
+app.delete('/api/cursa/:id_usuario/:id_materia', borrar);
 
 
 
