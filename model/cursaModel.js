@@ -30,11 +30,11 @@ cursaDB.crear = function (datos, resultado) {
 
     connection.query(consulta, params, (err, rows) => {
         if (err) {
-                resultado({
-                    message: "Error ",
-                    detail: err
-                });
-            
+            resultado({
+                message: "Error ",
+                detail: err
+            });
+
         } else {
             resultado(undefined, {
                 message: "Se cargo la nota",
@@ -44,7 +44,7 @@ cursaDB.crear = function (datos, resultado) {
     });
 }
 
-// ver 
+// ver todas las notas
 
 cursaDB.getAll = function (resultado) {
     var consulta = "SELECT * FROM cursa";
@@ -61,9 +61,44 @@ cursaDB.getAll = function (resultado) {
 }
 
 
+
+//ver nota por alumno
+cursaDB.getByUser = function (id, resultado) {
+    var consulta = "SELECT * FROM cursa where id_usuario = ?";
+    connection.query(consulta, id, (err, rows) => {
+        if (err) {
+            resultado({
+                message: "No se pudo mostrar los datos",
+                detail: err
+            });
+        } else {
+            resultado(undefined, rows);
+        }
+    });
+}
+
+
+//ver nota por materia
+
+cursaDB.getByMateria = function (id, resultado) {
+    var consulta = "SELECT * FROM cursa where id_materia = ?";
+    connection.query(consulta, id, (err, rows) => {
+        if (err) {
+            resultado({
+                message: "No se pudo mostrar los datos",
+                detail: err
+            });
+        } else {
+            resultado(undefined, rows);
+        }
+    });
+}
+
+
+
 //actualizar
 
-cursaDB.actualizar = function (datos, id_usuario,id_materia, retorno) {
+cursaDB.actualizar = function (datos, id_usuario, id_materia, retorno) {
     consulta = "UPDATE cursa SET nota=?, id_materia=?, id_usuario=? WHERE (id_usuario = ? and id_materia=?)";
     params = [datos.nota, datos.id_materia, datos.id_usuario, id_usuario, id_materia];
 
@@ -94,12 +129,12 @@ cursaDB.actualizar = function (datos, id_usuario,id_materia, retorno) {
 //borrar 
 
 cursaDB.borrar = function (id_usuario, id_materia, resultado) {
-   
-   
+
+
     connection.query("DELETE FROM cursa WHERE id_usuario = ? and id_materia=?", id_usuario, id_materia, err => {
         if (err) {
             resultado({ menssage: err.code, detail: err });
-        } 
+        }
     });
 }
 

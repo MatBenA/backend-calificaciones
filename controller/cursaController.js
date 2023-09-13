@@ -17,10 +17,12 @@ app.get('/api/cursa', getAll);
 app.post('/api/cursa', crear);
 app.put('/api/cursa/:id_usuario/:id_materia', actualizar);
 app.delete('/api/cursa/:id_usuario/:id_materia', borrar);
+app.get("/api/cursa/:id_usuario", getByUser)
+app.get("/api/cursa/:id_materia", getByMateria)
 
 
 
-
+//ver todas las notas
 function getAll(req, res) {
     cursaDB.getAll(function (err, resultado) {
         if (err) {
@@ -31,8 +33,33 @@ function getAll(req, res) {
     });
 }
 
+//ver las notas por alumno
+function getByUser(req, res) {
+    let id = req.params.id_usuario;
+    cursaDB.getByUser(id, (err, resultado) => {
+        if (err) {
+            res.status(500).send(err);
+        } else {
+            res.send(resultado);
+        }
+    })
+}
 
 
+//ver las notas por materia
+
+function getByMateria(req, res) {
+    let id = req.params.id_materia;
+    cursaDB.getByMateria(id, (err, resultado) => {
+        if (err) {
+            res.status(500).send(err);
+        } else {
+            res.send(resultado);
+        }
+    })
+}
+
+//crear nota
 function crear(req, res) {
     let nota = req.body;
     cursaDB.crear(nota, (err, resultado) => {
@@ -44,12 +71,12 @@ function crear(req, res) {
     });
 }
 
-
+//editar nota
 function actualizar(req, res) {
     let nota = req.body;
     let id_usuario = req.params.id_usuario;
-    let id_materia=req.params.id_materia;
-    cursaDB.actualizar(nota,id_usuario,id_materia, (err, resultado) => {
+    let id_materia = req.params.id_materia;
+    cursaDB.actualizar(nota, id_usuario, id_materia, (err, resultado) => {
         if (err) {
             res.status(500).send(err);
         } else {
@@ -59,15 +86,16 @@ function actualizar(req, res) {
 }
 
 
-
+//borrar nota
 function borrar(req, res) {
-    let id = [req.params.id_usuario,req.params.id_materia];
-    
+    let id = [req.params.id_usuario, req.params.id_materia];
+
     cursaDB.borrar(id, (err, resultado) => {
         if (err) {
             res.status(500).send(err);
         } else {
-                res.send("Se eliminó la nota ");}
-        
+            res.send("Se eliminó la nota ");
+        }
+
     });
 }
