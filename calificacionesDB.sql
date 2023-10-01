@@ -23,7 +23,7 @@ CREATE TABLE MATERIA
 
 CREATE TABLE USUARIO
 (
-  password VARCHAR(80) NOT NULL,
+  password VARCHAR(255) NOT NULL,
   email VARCHAR(80) NOT NULL,
   nickname VARCHAR(80) NOT NULL,
   id_usuario INT NOT NULL auto_increment,
