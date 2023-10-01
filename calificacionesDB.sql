@@ -36,7 +36,7 @@ CREATE TABLE USUARIO
 
 CREATE TABLE cursa
 (
-  nota DECIMAL(3, 2) NOT NULL,
+  nota DECIMAL(4, 2) NOT NULL,
   id_materia INT NOT NULL,
   id_usuario INT NOT NULL,
   PRIMARY KEY (id_materia, id_usuario),
