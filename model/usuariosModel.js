@@ -100,8 +100,7 @@ usuariosDB.actualizar = function (datos, id, retorno) {
 //borrar 
 
 usuariosDB.borrar = function (id, resultado) {
-   
-   
+    
     connection.query("DELETE FROM usuario WHERE id_usuario = ? ", id, (err, result) => {
         if (err) {
             resultado({ menssage: err.code, detail: err });
