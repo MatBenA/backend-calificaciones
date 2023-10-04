@@ -59,12 +59,27 @@ cursaDB.getAll = function (resultado) {
         }
     });
 }
+//consulta del profesor de nota por alumno por materia
 
-
+cursaDB.getByAlumnoAndMateria = function (materia, user, resultado) {
+    var consulta = "SELECT  usuario.nickname as alumno,materia.nombre as materia, nota FROM materia inner join cursa inner join usuario on materia.id_materia=cursa.id_materia and usuario.id_usuario=cursa.id_usuario where usuario.id_usuario =? and materia.id_materia=?";
+     
+    connection.query(consulta, materia, user, (err, rows) => {
+        if (err) {
+            resultado({
+                message: "No se pudo mostrar los datos",
+                detail: err
+            });
+        } else {
+            resultado(undefined, rows);
+        }
+    });
+}
 
 //ver nota por alumno
 cursaDB.getByUser = function (id, resultado) {
-    var consulta = "SELECT * FROM cursa where id_usuario = ?";
+    var consulta = "SELECT  nombre, nota FROM materia inner join cursa  on materia.id_materia=cursa.id_materia where id_usuario = ?";
+     
     connection.query(consulta, id, (err, rows) => {
         if (err) {
             resultado({
@@ -81,7 +96,8 @@ cursaDB.getByUser = function (id, resultado) {
 //ver nota por materia
 
 cursaDB.getByMateria = function (id, resultado) {
-    var consulta = "SELECT * FROM cursa where id_materia = ?";
+    var consulta = "SELECT nickname, nota FROM cursa inner join usuario on usuario.id_usuario=cursa.id_usuario where id_materia=? ";
+
     connection.query(consulta, id, (err, rows) => {
         if (err) {
             resultado({

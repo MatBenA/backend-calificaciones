@@ -17,9 +17,9 @@ app.get('/api/cursa', getAll);
 app.post('/api/cursa', crear);
 app.put('/api/cursa/:id_usuario/:id_materia', actualizar);
 app.delete('/api/cursa/:id_usuario/:id_materia', borrar);
-app.get("/api/cursa/:id_usuario", getByUser)
-app.get("/api/cursa/:id_materia", getByMateria)
-
+app.get("/api/cursa/:id_usuario", getByUser);
+app.get("/api/cursa/:id_materia", getByMateria);
+app.get("/api/cursa/:id_materia/:id_usuario", getByAlumnoAndMateria);
 
 
 //ver todas las notas
@@ -37,6 +37,19 @@ function getAll(req, res) {
 function getByUser(req, res) {
     let id = req.params.id_usuario;
     cursaDB.getByUser(id, (err, resultado) => {
+        if (err) {
+            res.status(500).send(err);
+        } else {
+            res.send(resultado);
+        }
+    })
+}
+
+//ver por materia y alumno
+function getByAlumnoAndMateria(req, res) {
+    let materia = req.params.id_materia;
+    let user = req.params.id_usuario;
+    cursaDB.getByAlumnoAndMateria(materia, user, (err, resultado) => {
         if (err) {
             res.status(500).send(err);
         } else {
