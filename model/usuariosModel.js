@@ -140,10 +140,7 @@ usuariosDB.getPwdByNick = function (nickname, callBack) {
     const consulta = "SELECT password FROM usuario WHERE nickname = ?;";
     connection.query(consulta, nickname, (err, result) => {
         if (err) return callBack(err);
-        if (result.affectedRows === 0)
-            return callBack(null, { message: "No se encontró este usuario." });
-
-        callBack(null, result[0]);
+        callBack(null, result);
     });
 };
 
