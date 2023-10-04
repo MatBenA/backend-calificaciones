@@ -8,7 +8,7 @@ const app = express();
 
 //importacion de los métodos del modelo persona que se encargará de interactuar con la base de datos
 
-const cursaDB = require("../model/cursaModel.js");
+const cursaDB = require("../model/notaModel.js");
 
 //se exporta app para que pueda ser utilizada en el index
 module.exports = app;

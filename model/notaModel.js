@@ -12,20 +12,20 @@ connection.connect((err) => {
     if (err) {
         console.log(err);
     } else {
-        console.log("cursa conectada a base de datos");
+        console.log("nota conectada a base de datos");
     }
 });
 
 //este objeto contendrá los métodos a exportar
-const cursaDB = {};
+const notaDB = {};
 
 //aca deben ir los métodos para interactuar con la base de datos
 
 
 //crear 
 
-cursaDB.crear = function (datos, resultado) {
-    consulta = "INSERT INTO cursa (nota, id_materia, id_usuario ) VALUES (?,?,?);";
+notaDB.crear = function (datos, resultado) {
+    consulta = "INSERT INTO nota (nota, id_materia, id_usuario ) VALUES (?,?,?);";
     params = [datos.nota, datos.id_materia, datos.id_usuario];
 
     connection.query(consulta, params, (err, rows) => {
@@ -46,8 +46,8 @@ cursaDB.crear = function (datos, resultado) {
 
 // ver todas las notas
 
-cursaDB.getAll = function (resultado) {
-    var consulta = "SELECT * FROM cursa";
+notaDB.getAll = function (resultado) {
+    var consulta = "SELECT * FROM nota";
     connection.query(consulta, function (err, rows) {
         if (err) {
             resultado({
@@ -61,8 +61,8 @@ cursaDB.getAll = function (resultado) {
 }
 //consulta del profesor de nota por alumno por materia
 
-cursaDB.getByAlumnoAndMateria = function (materia, user, resultado) {
-    var consulta = "SELECT  usuario.nickname as alumno,materia.nombre as materia, nota FROM materia inner join cursa inner join usuario on materia.id_materia=cursa.id_materia and usuario.id_usuario=cursa.id_usuario where usuario.id_usuario =? and materia.id_materia=?";
+notaDB.getByAlumnoAndMateria = function (materia, user, resultado) {
+    var consulta = "SELECT  usuario.nickname as alumno,materia.nombre as materia, nota FROM materia inner join nota inner join usuario on materia.id_materia=cursa.id_materia and usuario.id_usuario=cursa.id_usuario where usuario.id_usuario =? and materia.id_materia=?";
      
     connection.query(consulta, materia, user, (err, rows) => {
         if (err) {
@@ -77,8 +77,8 @@ cursaDB.getByAlumnoAndMateria = function (materia, user, resultado) {
 }
 
 //ver nota por alumno
-cursaDB.getByUser = function (id, resultado) {
-    var consulta = "SELECT  nombre, nota FROM materia inner join cursa  on materia.id_materia=cursa.id_materia where id_usuario = ?";
+notaDB.getByUser = function (id, resultado) {
+    var consulta = "SELECT  nombre, nota FROM materia inner join nota  on materia.id_materia=cursa.id_materia where id_usuario = ?";
      
     connection.query(consulta, id, (err, rows) => {
         if (err) {
@@ -95,8 +95,8 @@ cursaDB.getByUser = function (id, resultado) {
 
 //ver nota por materia
 
-cursaDB.getByMateria = function (id, resultado) {
-    var consulta = "SELECT nickname, nota FROM cursa inner join usuario on usuario.id_usuario=cursa.id_usuario where id_materia=? ";
+notaDB.getByMateria = function (id, resultado) {
+    var consulta = "SELECT nickname, nota FROM nota inner join usuario on usuario.id_usuario=cursa.id_usuario where id_materia=? ";
 
     connection.query(consulta, id, (err, rows) => {
         if (err) {
@@ -114,8 +114,8 @@ cursaDB.getByMateria = function (id, resultado) {
 
 //actualizar
 
-cursaDB.actualizar = function (datos, id_usuario, id_materia, retorno) {
-    consulta = "UPDATE cursa SET nota=?, id_materia=?, id_usuario=? WHERE (id_usuario = ? and id_materia=?)";
+notaDB.actualizar = function (datos, id_usuario, id_materia, retorno) {
+    consulta = "UPDATE nota SET nota=?, id_materia=?, id_usuario=? WHERE (id_usuario = ? and id_materia=?)";
     params = [datos.nota, datos.id_materia, datos.id_usuario, id_usuario, id_materia];
 
     connection.query(consulta, params, (err, result) => {
@@ -144,10 +144,10 @@ cursaDB.actualizar = function (datos, id_usuario, id_materia, retorno) {
 
 //borrar 
 
-cursaDB.borrar = function (id_usuario, id_materia, resultado) {
+notaDB.borrar = function (id_usuario, id_materia, resultado) {
 
 
-    connection.query("DELETE FROM cursa WHERE id_usuario = ? and id_materia=?", id_usuario, id_materia, err => {
+    connection.query("DELETE FROM nota WHERE id_usuario = ? and id_materia=?", id_usuario, id_materia, err => {
         if (err) {
             resultado({ menssage: err.code, detail: err });
         }
@@ -160,4 +160,4 @@ cursaDB.borrar = function (id_usuario, id_materia, resultado) {
 
 
 
-module.exports = cursaDB;
+module.exports = notaDB;
