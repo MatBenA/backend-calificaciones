@@ -17,6 +17,8 @@ app.get("/api/usuarios", getAll);
 app.post("/api/usuarios", crear);
 app.put("/api/usuarios/:id_usuario", actualizar);
 app.delete("/api/usuarios/:id_usuario", borrar);
+app.put("/api/usuarios/editar/:id_usuario", actualizarAlumno);
+
 
 function getAll(req, res) {
     usuariosDB.getAll(function (err, resultado) {
@@ -43,6 +45,19 @@ function actualizar(req, res) {
     let user = req.body;
     let id = req.params.id_usuario;
     usuariosDB.actualizar(user, id, (err, resultado) => {
+        if (err) {
+            res.status(500).send(err);
+        } else {
+            res.send(resultado);
+        }
+    });
+}
+
+//actualizar siendo alumno o profesor
+function actualizarAlumno(req, res) {
+    let user = req.body;
+    let id = req.params.id_usuario;
+    usuariosDB.actualizarAlumno(user, id, (err, resultado) => {
         if (err) {
             res.status(500).send(err);
         } else {

@@ -96,6 +96,35 @@ usuariosDB.actualizar = function (datos, id, retorno) {
     });
 }
 
+//actualizar siendo alumno o profesor
+
+usuariosDB.actualizarAlumno = function (datos, id, retorno) {
+    consulta = "UPDATE usuario SET password = ?, email= ?, nickname= ? WHERE id_usuario = ?";
+    params = [datos.password, datos.email, datos.nickname, id];
+
+    connection.query(consulta, params, (err, result) => {
+
+        if (err) {
+
+            retorno({
+                message: "Error, analizar codigo error",
+                detail: err
+            });
+
+        } else if (result.affectedRows == 0) {
+            retorno({
+                message: "No existe usuario que coincida con el criterio de busqueda",
+                detail: result
+            });
+        } else {
+            retorno(undefined, {
+                message: "Se modificó el usuario",
+                detail: result
+            });
+        }
+    });
+}
+
 
 //borrar 
 
