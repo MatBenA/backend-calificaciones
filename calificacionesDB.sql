@@ -47,3 +47,7 @@ CREATE TABLE nota
 INSERT INTO ROL (nombre) VALUES ("admin");
 INSERT INTO ROL (nombre) VALUES ("estudiante");
 INSERT INTO ROL (nombre) VALUES ("profesor");
+
+INSERT INTO CURSO (nombre) VALUES ("Programación I");
+
+INSERT INTO MATERIA (nombre) VALUES ("Introduccion a Prog.");
