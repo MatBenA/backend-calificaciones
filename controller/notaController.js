@@ -8,23 +8,22 @@ const app = express();
 
 //importacion de los métodos del modelo persona que se encargará de interactuar con la base de datos
 
-const cursaDB = require("../model/cursaModel.js");
+const notaDB = require("../model/notaModel.js");
 
 //se exporta app para que pueda ser utilizada en el index
 module.exports = app;
 
-app.get('/api/cursa', getAll);
-app.post('/api/cursa', crear);
-app.put('/api/cursa/:id_usuario/:id_materia', actualizar);
-app.delete('/api/cursa/:id_usuario/:id_materia', borrar);
-app.get("/api/cursa/:id_usuario", getByUser);
-app.get("/api/cursa/:id_materia", getByMateria);
-app.get("/api/cursa/:id_materia/:id_usuario", getByAlumnoAndMateria);
-
+app.get("/api/nota", getAll);
+app.post("/api/nota", crear);
+app.put("/api/nota/:id_materia/:id_usuario", actualizar);
+app.delete("/api/nota/:id_materia/:id_usuario", borrar);
+app.get("/api/nota/:id_usuario", getByUser);
+app.get("/api/nota/:id_materia", getByMateria);
+app.get("/api/nota/:id_materia/:id_usuario", getByAlumnoAndMateria);
 
 //ver todas las notas
 function getAll(req, res) {
-    cursaDB.getAll(function (err, resultado) {
+    notaDB.getAll(function (err, resultado) {
         if (err) {
             res.status(500).send(err);
         } else {
@@ -36,46 +35,45 @@ function getAll(req, res) {
 //ver las notas por alumno
 function getByUser(req, res) {
     let id = req.params.id_usuario;
-    cursaDB.getByUser(id, (err, resultado) => {
+    notaDB.getByUser(id, (err, resultado) => {
         if (err) {
             res.status(500).send(err);
         } else {
             res.send(resultado);
         }
-    })
+    });
 }
 
 //ver por materia y alumno
 function getByAlumnoAndMateria(req, res) {
     let materia = req.params.id_materia;
     let user = req.params.id_usuario;
-    cursaDB.getByAlumnoAndMateria(materia, user, (err, resultado) => {
+    notaDB.getByAlumnoAndMateria(materia, user, (err, resultado) => {
         if (err) {
             res.status(500).send(err);
         } else {
             res.send(resultado);
         }
-    })
+    });
 }
-
 
 //ver las notas por materia
 
 function getByMateria(req, res) {
     let id = req.params.id_materia;
-    cursaDB.getByMateria(id, (err, resultado) => {
+    notaDB.getByMateria(id, (err, resultado) => {
         if (err) {
             res.status(500).send(err);
         } else {
             res.send(resultado);
         }
-    })
+    });
 }
 
 //crear nota
 function crear(req, res) {
     let nota = req.body;
-    cursaDB.crear(nota, (err, resultado) => {
+    notaDB.crear(nota, (err, resultado) => {
         if (err) {
             res.status(500).send(err);
         } else {
@@ -87,9 +85,9 @@ function crear(req, res) {
 //editar nota
 function actualizar(req, res) {
     let nota = req.body;
-    let id_usuario = req.params.id_usuario;
     let id_materia = req.params.id_materia;
-    cursaDB.actualizar(nota, id_usuario, id_materia, (err, resultado) => {
+    let id_usuario = req.params.id_usuario;
+    notaDB.actualizar(nota, id_materia, id_usuario, (err, resultado) => {
         if (err) {
             res.status(500).send(err);
         } else {
@@ -98,17 +96,16 @@ function actualizar(req, res) {
     });
 }
 
-
 //borrar nota
 function borrar(req, res) {
-    let id = [req.params.id_usuario, req.params.id_materia];
-
-    cursaDB.borrar(id, (err, resultado) => {
-        if (err) {
-            res.status(500).send(err);
-        } else {
-            res.send("Se eliminó la nota ");
-        }
-
+    const idMateria = parseInt(req.params.id_materia);
+    const idUser = parseInt(req.params.id_usuario);
+    notaDB.borrar(idMateria, idUser, (err, resultado) => {
+        if (err) return res.status(500).send(err);
+        if (resultado.affectedRows === 0)
+            return res
+                .status(404)
+                .send("No se encontró esta nota para este usuario y materia.");
+        res.send("Se eliminó la nota ");
     });
 }

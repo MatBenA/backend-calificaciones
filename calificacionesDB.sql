@@ -34,9 +34,9 @@ CREATE TABLE USUARIO
   FOREIGN KEY (id_curso) REFERENCES CURSO(id_curso)
 );
 
-CREATE TABLE cursa
+CREATE TABLE nota
 (
-  nota DECIMAL(4, 2) NOT NULL,
+  calificacion DECIMAL(4, 2) NOT NULL,
   id_materia INT NOT NULL,
   id_usuario INT NOT NULL,
   PRIMARY KEY (id_materia, id_usuario),
@@ -47,3 +47,7 @@ CREATE TABLE cursa
 INSERT INTO ROL (nombre) VALUES ("admin");
 INSERT INTO ROL (nombre) VALUES ("estudiante");
 INSERT INTO ROL (nombre) VALUES ("profesor");
+
+INSERT INTO CURSO (nombre) VALUES ("Programación I");
+
+INSERT INTO MATERIA (nombre) VALUES ("Introduccion a Prog.");

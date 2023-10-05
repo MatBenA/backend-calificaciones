@@ -10,12 +10,14 @@ del cliente y enviarán resultados*/
 const materiaController = require("./controller/materiaController");
 const usuariosController = require("./controller/usuariosController");
 const cursoController = require("./controller/cursoController");
-const cursaController = require("./controller/cursaController");
+const notaController = require("./controller/notaController");
+const security = require("./controller/security");
 //ejecutamos los controladores
 app.use(materiaController);
 app.use(usuariosController);
 app.use(cursoController);
-app.use(cursaController);
+app.use(notaController);
+app.use(security);
 
 //a la escucha de solicitudes en el puerto configurado
 app.listen(config.server.port, (err) => {
