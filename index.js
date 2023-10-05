@@ -1,9 +1,15 @@
 const express = require("express");
 const app = express();
-
+const cors = require('cors');
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 const config = require("./configDB"); //configuracion de la base de datos
+
+
+app.use(cors({
+    origin:'http://localhost:3001'
+}));
+
 
 /*importamos los controladores que recibirán las solicitudes
 del cliente y enviarán resultados*/
