@@ -4,13 +4,15 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const usuariosDB = require("../model/usuariosModel");
 
+require("dotenv").config();
+
 app.post("/api/login", login);
 
 function login(req, res) {
-    const { nickname, password } = req.body;
+    const { email, password } = req.body;
 
     //validacion de contraseña
-    usuariosDB.getPwdByNick(nickname, async (err, result) => {
+    usuariosDB.getPwdByNick(email, async (err, result) => {
         if (err)
             return res
                 .status(500)
@@ -18,20 +20,15 @@ function login(req, res) {
         if (result.length === 0)
             return res.status(404).send("No existe este usuario.");
         const match = await bcrypt.compare(password, result[0].password);
-        if (!match)
-            return res.status(403).send("Nombre o contraseña inválida.");
+        if (!match) return res.status(403).send("Email o contraseña inválida.");
 
-
-        //funcion que traiga el valor del id del usuario
-        //de la base de datos (funcion en usurioModel?)
-        usuariosDB
 
         //Generacion de Token JWT
         //entrada <- nickname, correo, user_id
         //salida -> enviar token
 
-        const token = jwt.sign(nickname, 10);
-
+        const accessToken = jwt.sign(email, process.env.ACCESS_TOKEN_SECRET);
+        return res.json({accessToken});
     });
 }
 

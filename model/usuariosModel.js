@@ -179,9 +179,9 @@ usuariosDB.borrar = function (id, resultado) {
 };
 
 //get contraseña para compararla en la autenticacion
-usuariosDB.getPwdByNick = function (nickname, callBack) {
-    const consulta = "SELECT password FROM usuario WHERE nickname = ?;";
-    connection.query(consulta, nickname, (err, result) => {
+usuariosDB.getPwdByNick = function (email, callBack) {
+    const consulta = "SELECT password FROM usuario WHERE email = ?;";
+    connection.query(consulta, email, (err, result) => {
         if (err) return callBack(err);
         callBack(null, result);
     });
