@@ -12,20 +12,21 @@ connection.connect((err) => {
     if (err) {
         console.log(err);
     } else {
-        console.log("nota conectada a base de datos");
+        console.log("notas conectada a base de datos");
     }
 });
 
 //este objeto contendrá los métodos a exportar
-const notaDB = {};
+const notasDB = {};
 
 //aca deben ir los métodos para interactuar con la base de datos
 
 //crear
 
-notaDB.crear = function (datos, resultado) {
-    const consulta =
-        "INSERT INTO nota (calificacion, id_materia, id_usuario ) VALUES (?,?,?);";
+notasDB.crear = function (datos, resultado) {
+    const periodo = Object.keys(datos)[0];
+
+    const consulta = `INSERT INTO notas (${periodo}, id_materia, id_usuario ) VALUES (?,?,?);`;
     const datosArray = Object.values(datos);
     connection.query(consulta, datosArray, (err, rows) => {
         if (err) {
@@ -42,10 +43,9 @@ notaDB.crear = function (datos, resultado) {
     });
 };
 
-// ver todas las notas
-
-notaDB.getAll = function (resultado) {
-    var consulta = "SELECT * FROM nota";
+// ver todas las notass
+notasDB.getAll = function (resultado) {
+    var consulta = "SELECT * FROM notas";
     connection.query(consulta, function (err, rows) {
         if (err) {
             resultado({
@@ -57,9 +57,9 @@ notaDB.getAll = function (resultado) {
         }
     });
 };
-//consulta del profesor de nota por alumno por materia
 
-notaDB.getByAlumnoAndMateria = function (materia, user, resultado) {
+//consulta del profesor de notas por alumno por materia
+notasDB.getByAlumnoAndMateria = function (materia, user, resultado) {
     var consulta =
         "SELECT  usuario.nickname as alumno,materia.nombre as materia, calificacion FROM materia inner join calificacion inner join usuario on materia.id_materia=cursa.id_materia and usuario.id_usuario=cursa.id_usuario where usuario.id_usuario =? and materia.id_materia=?";
 
@@ -75,10 +75,10 @@ notaDB.getByAlumnoAndMateria = function (materia, user, resultado) {
     });
 };
 
-//ver nota por alumno
-notaDB.getByUser = function (id, resultado) {
+//ver notas por alumno
+notasDB.getByUser = function (id, resultado) {
     var consulta =
-        "SELECT  nombre, nota FROM materia inner join nota  on materia.id_materia=cursa.id_materia where id_usuario = ?";
+        "SELECT  nombre, notas FROM materia inner join nota  on materia.id_materia=cursa.id_materia where id_usuario = ?";
 
     connection.query(consulta, id, (err, rows) => {
         if (err) {
@@ -92,11 +92,11 @@ notaDB.getByUser = function (id, resultado) {
     });
 };
 
-//ver nota por materia
+//ver notas por materia
 
-notaDB.getByMateria = function (id, resultado) {
+notasDB.getByMateria = function (id, resultado) {
     var consulta =
-        "SELECT nickname, nota FROM nota inner join usuario on usuario.id_usuario=cursa.id_usuario where id_materia=? ";
+        "SELECT nickname, notas FROM nota inner join usuario on usuario.id_usuario=cursa.id_usuario where id_materia=? ";
 
     connection.query(consulta, id, (err, rows) => {
         if (err) {
@@ -112,16 +112,13 @@ notaDB.getByMateria = function (id, resultado) {
 
 //actualizar
 
-notaDB.actualizar = function (datos, id_materia, id_usuario, retorno) {
-    consulta =
-        "UPDATE nota SET calificacion=?, id_materia=?, id_usuario=? WHERE (id_usuario = ? and id_materia=?)";
-    params = [
-        datos.nota,
-        datos.id_materia,
-        datos.id_usuario,
-        id_usuario,
-        id_materia,
-    ];
+notasDB.actualizar = function (datos, id_materia, id_usuario, retorno) {
+    const periodo = Object.keys(datos)[0];
+    consulta = `UPDATE notas SET ${periodo}=?, id_materia=?, id_usuario=? WHERE (id_usuario = ? and id_materia=?)`;
+
+    const params = Object.values(datos);
+    params.push(id_usuario);
+    params.push(id_materia);
 
     connection.query(consulta, params, (err, result) => {
         if (err) {
@@ -137,7 +134,7 @@ notaDB.actualizar = function (datos, id_materia, id_usuario, retorno) {
             });
         } else {
             retorno(undefined, {
-                message: "Se modificó la nota",
+                message: "Se modificó la notas",
                 detail: result,
             });
         }
@@ -146,12 +143,13 @@ notaDB.actualizar = function (datos, id_materia, id_usuario, retorno) {
 
 //borrar
 
-notaDB.borrar = function (id_materia, id_usuario, callBack) {
-    const consulta = "DELETE FROM nota WHERE id_materia = ? and id_usuario = ?;";
+notasDB.borrar = function (id_materia, id_usuario, callBack) {
+    const consulta =
+        "DELETE FROM notas WHERE id_materia = ? and id_usuario = ?;";
     connection.query(consulta, [id_materia, id_usuario], (err, result) => {
         if (err) return resultado({ menssage: err.code, detail: err });
         return callBack(null, result);
     });
 };
 
-module.exports = notaDB;
+module.exports = notasDB;
