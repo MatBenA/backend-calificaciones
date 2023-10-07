@@ -19,7 +19,6 @@ app.put("/api/usuarios/:id_usuario", actualizar);
 app.delete("/api/usuarios/:id_usuario", borrar);
 app.put("/api/usuarios/editar/:id_usuario", actualizarAlumno);
 
-
 function getAll(req, res) {
     usuariosDB.getAll(function (err, resultado) {
         if (err) {
@@ -47,6 +46,8 @@ function actualizar(req, res) {
     usuariosDB.actualizar(user, id, (err, resultado) => {
         if (err) {
             res.status(500).send(err);
+        } else if (resultado.detail.affectedRows === 0) {
+            res.status(404).send(resultado);
         } else {
             res.send(resultado);
         }
