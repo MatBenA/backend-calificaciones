@@ -171,6 +171,8 @@ usuariosDB.borrar = function (id, resultado) {
     );
 };
 
+
+//get contraseña para compararla en la autenticacion
 usuariosDB.getPwdByNick = function (nickname, callBack) {
     const consulta = "SELECT password FROM usuario WHERE nickname = ?;";
     connection.query(consulta, nickname, (err, result) => {
@@ -178,5 +180,7 @@ usuariosDB.getPwdByNick = function (nickname, callBack) {
         callBack(null, result);
     });
 };
+
+//get usuario y id
 
 module.exports = usuariosDB;

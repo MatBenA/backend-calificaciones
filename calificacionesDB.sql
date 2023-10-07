@@ -23,10 +23,13 @@ CREATE TABLE MATERIA
 
 CREATE TABLE USUARIO
 (
-  password VARCHAR(255) NOT NULL,
-  email VARCHAR(80) NOT NULL,
-  nickname VARCHAR(80) NOT NULL,
+
   id_usuario INT NOT NULL auto_increment,
+  email VARCHAR(80) NOT NULL UNIQUE,
+  nombre VARCHAR(80) NOT NULL,
+  apellido VARCHAR(80) NOT NULL,
+  dni VARCHAR(80) NOT NULL,
+  password VARCHAR(255) NOT NULL,
   id_rol INT NOT NULL,
   id_curso INT,
   PRIMARY KEY (id_usuario),
@@ -34,9 +37,11 @@ CREATE TABLE USUARIO
   FOREIGN KEY (id_curso) REFERENCES CURSO(id_curso)
 );
 
-CREATE TABLE nota
+CREATE TABLE NOTAS
 (
-  calificacion DECIMAL(4, 2) NOT NULL,
+  periodo_1 DECIMAL(4, 2),
+  periodo_2 DECIMAL(4, 2),
+  periodo_3 DECIMAL(4, 2),
   id_materia INT NOT NULL,
   id_usuario INT NOT NULL,
   PRIMARY KEY (id_materia, id_usuario),
