@@ -126,31 +126,50 @@ usuariosDB.actualizar = async function (datos, id, retorno) {
 };
 
 //actualizar siendo alumno o profesor
-usuariosDB.actualizarAlumno = function (datos, id, retorno) {
+
+usuariosDB.actualizarAlumno = async function (datos, id, retorno) {
     consulta =
-        "UPDATE usuario SET password = ?, email= ?, nickname= ? WHERE id_usuario = ?";
-    params = [datos.password, datos.email, datos.nickname, id];
+        "UPDATE usuario SET email = ?, nombre = ?, apellido = ?,  password = ? WHERE id_usuario = ?";
+
+    const hashedPassword = await bcrypt.hash(datos.password, 10);
+
+    params = [
+        datos.email,
+        datos.nombre,
+        datos.apellido,
+        hashedPassword,
+        id,
+    ];
 
     connection.query(consulta, params, (err, result) => {
         if (err) {
-            retorno({
-                message: "Error, analizar codigo error",
-                detail: err,
-            });
+            if (err.code === "ER_DUP_ENTRY") {
+                retorno({
+                    message: "ya existe un usuario con este mail",
+                    detail: err,
+                });
+            } else if (err.code === "ER_NO_REFERENCED_ROW_2") {
+                retorno({
+                    message: "No existe este curso o rol",
+                    detail: err,
+                });
+            } else retorno(err)
         } else if (result.affectedRows == 0) {
-            retorno({
+            retorno(null, {
                 message:
                     "No existe usuario que coincida con el criterio de busqueda",
                 detail: result,
             });
         } else {
-            retorno(undefined, {
+            retorno(null, {
                 message: "Se modificó el usuario",
                 detail: result,
             });
         }
     });
 };
+
+
 
 //borrar
 usuariosDB.borrar = function (id, resultado) {
