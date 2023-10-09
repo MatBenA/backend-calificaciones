@@ -45,7 +45,7 @@ notasDB.crear = function (datos, resultado) {
 
 // ver todas las notass
 notasDB.getAll = function (resultado) {
-    var consulta = "SELECT * FROM notas";
+    var consulta = "SELECT  usuario.apellido ,usuario.nombre  ,materia.nombre ,periodo_1 , periodo_2, periodo_3 FROM notas inner join usuario on usuario.id_usuario=notas.id_usuario inner join materia on materia.id_materia=notas.id_materia";
     connection.query(consulta, function (err, rows) {
         if (err) {
             resultado({

@@ -11,6 +11,7 @@ CREATE TABLE CURSO
 (
   id_curso INT NOT NULL auto_increment,
   nombre VARCHAR(80) NOT NULL,
+  
   PRIMARY KEY (id_curso)
 );
 
@@ -18,6 +19,10 @@ CREATE TABLE MATERIA
 (
   id_materia INT NOT NULL auto_increment,
   nombre VARCHAR(80) NOT NULL,
+  id_usuario INT NOT NULL,
+  id_curso INT NOT NULL,
+  FOREIGN KEY (id_curso) REFERENCES CURSO(id_curso),
+  FOREIGN KEY (id_usuario) REFERENCES USUARIO(id_usuario)
   PRIMARY KEY (id_materia)
 );
 
