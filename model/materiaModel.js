@@ -21,8 +21,9 @@ const materiaDB = {};
 
 //aca deben ir los métodos para interactuar con la base de datos
 materiaDB.create = function (materiaData, callBack) {
-    const request = "INSERT INTO materia (nombre) VALUES (?);";
-    connection.query(request, materiaData.nombre, (err, result) => {
+    const request = "INSERT INTO materia (nombre, id_usuario, id_curso) VALUES (?,?,?);";
+    materiaData=[materiaData.nombre, materiaData.id_usuario, materiaData.id_curso ];
+    connection.query(request, materiaData, (err, result) => {
         if (err) {
             if (err.code === "ER_DUP_ENTRY") {
                 callBack("Ya existe una materia con esta ID");
@@ -39,7 +40,9 @@ materiaDB.create = function (materiaData, callBack) {
 };
 
 materiaDB.getAll = function (callBack) {
-    const request = "SELECT * FROM materia";
+    
+    var request = "SELECT id_materia, materia.nombre , usuario.apellido ,usuario.nombre  ,curso.nombre FROM materia inner join usuario on usuario.id_usuario=materia.id_usuario inner join curso on materia.id_curso=curso.id_curso";
+
     connection.query(request, (err, result) => {
         if (err) {
             callBack(err);

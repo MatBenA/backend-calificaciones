@@ -15,16 +15,6 @@ CREATE TABLE CURSO
   PRIMARY KEY (id_curso)
 );
 
-CREATE TABLE MATERIA
-(
-  id_materia INT NOT NULL auto_increment,
-  nombre VARCHAR(80) NOT NULL,
-  id_usuario INT NOT NULL,
-  id_curso INT NOT NULL,
-  FOREIGN KEY (id_curso) REFERENCES CURSO(id_curso),
-  FOREIGN KEY (id_usuario) REFERENCES USUARIO(id_usuario)
-  PRIMARY KEY (id_materia)
-);
 
 CREATE TABLE USUARIO
 (
@@ -42,6 +32,18 @@ CREATE TABLE USUARIO
   FOREIGN KEY (id_curso) REFERENCES CURSO(id_curso)
 );
 
+CREATE TABLE MATERIA
+(
+  id_materia INT NOT NULL auto_increment,
+  nombre VARCHAR(80) NOT NULL,
+  id_usuario INT NOT NULL,
+  id_curso INT NOT NULL,
+   PRIMARY KEY (id_materia),
+  FOREIGN KEY (id_curso) REFERENCES CURSO(id_curso),
+  FOREIGN KEY (id_usuario) REFERENCES USUARIO(id_usuario)
+ 
+);
+ 
 CREATE TABLE NOTAS
 (
   periodo_1 DECIMAL(4, 2),
@@ -60,4 +62,3 @@ INSERT INTO ROL (nombre) VALUES ("profesor");
 
 INSERT INTO CURSO (nombre) VALUES ("Programación I");
 
-INSERT INTO MATERIA (nombre) VALUES ("Introduccion a Prog.");
