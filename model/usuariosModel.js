@@ -2,7 +2,7 @@
 //la base de datos y de la logica para enviar estos datos
 
 //configuracion inicial
-const mysql = require("mysql2");
+const mysql = require("mysql");
 const config = require("../configDB");
 const bcrypt = require("bcrypt");
 
@@ -118,7 +118,7 @@ if (err.code === "ER_DUP_ENTRY") {
             });
         } else {
             retorno(null, {
-                message: "Se modificó el usuario",
+                message: `Se modificó el usuario con id ${datos.id} nombre: ${datos.nombre}`,
                 detail: result,
             });
         }

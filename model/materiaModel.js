@@ -2,7 +2,7 @@
 //la base de datos y de la logica para enviar estos datos
 
 //configuracion inicial
-const mysql = require("mysql2");
+const mysql = require("mysql");
 const config = require("../configDB");
 
 //Se inicia la coneccion con la base de datos
@@ -21,7 +21,7 @@ const materiaDB = {};
 
 //aca deben ir los métodos para interactuar con la base de datos
 materiaDB.create = function (materiaData, callBack) {
-    const request = "INSERT INTO materia (nombre, id_usuario, id_curso) VALUES (?,?,?);";
+    const request = "INSERT INTO MATERIA (nombre, id_usuario, id_curso) VALUES (?,?,?);";
     materiaData=[materiaData.nombre, materiaData.id_usuario, materiaData.id_curso ];
     connection.query(request, materiaData, (err, result) => {
         if (err) {
@@ -41,7 +41,7 @@ materiaDB.create = function (materiaData, callBack) {
 
 materiaDB.getAll = function (callBack) {
     
-    var request = "SELECT id_materia, materia.nombre as materia , usuario.apellido ,usuario.nombre    ,curso.nombre as curso FROM materia inner join usuario on usuario.id_usuario=materia.id_usuario inner join curso on materia.id_curso=curso.id_curso";
+    var request = "SELECT id_materia, MATERIA.nombre as MATERIA , USUARIO.apellido ,USUARIO.nombre    ,CURSO.nombre as CURSO FROM MATERIA INNER JOIN USUARIO on USUARIO.id_usuario=MATERIA.id_usuario INNER JOIN CURSO on MATERIA.id_curso=CURSO.id_curso";
 
     connection.query(request, (err, result) => {
         if (err) {
