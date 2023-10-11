@@ -22,11 +22,11 @@ const usuariosDB = {};
 
 //aca deben ir los métodos para interactuar con la base de datos
 
-//crear
+//crear 
 usuariosDB.crear = async function (datos, resultado) {
     const hashedPassword = await bcrypt.hash(datos.password, 10);
     consulta =
-        "INSERT INTO usuario (email, nombre, apellido, dni, password, id_rol, id_curso) VALUES (?,?,?,?,?,?,?);";
+        "INSERT INTO USUARIO (email, nombre, apellido, dni, password, id_rol, id_curso) VALUES (?,?,?,?,?,?,?);";
     params = [
         datos.email,
         datos.nombre,
@@ -64,9 +64,9 @@ usuariosDB.crear = async function (datos, resultado) {
     });
 };
 
-// ver
+// ver 
 usuariosDB.getAll = function (resultado) {
-    var consulta = "SELECT id_usuario, usuario.nombre, apellido, dni, email, rol.nombre as rol FROM usuario inner join rol on rol.id_rol=usuario.id_rol order by id_usuario";
+    var consulta = "SELECT id_usuario, USUARIO.nombre, apellido, dni, email, ROL.nombre as rol FROM USUARIO INNER JOIN ROL on ROL.id_rol = USUARIO.id_rol ORDER BY id_usuario;";
     connection.query(consulta, function (err, rows) {
         if (err) {
             resultado({
@@ -82,8 +82,8 @@ usuariosDB.getAll = function (resultado) {
 //actualizar
 usuariosDB.actualizar = async function (datos, id, retorno) {
     consulta =
-        "UPDATE usuario SET email = ?, nombre = ?, apellido = ?, dni = ?, password = ?, id_rol = ?, id_curso = ? WHERE id_usuario = ?";
-
+        "UPDATE USUARIO SET email = ?, nombre = ?, apellido = ?, dni = ?, password = ?, id_rol = ?, id_curso = ? WHERE id_usuario = ?";
+    
     const hashedPassword = await bcrypt.hash(datos.password, 10);
 
     params = [
@@ -99,9 +99,9 @@ usuariosDB.actualizar = async function (datos, id, retorno) {
 
     connection.query(consulta, params, (err, result) => {
         if (err) {
-            if (err.code === "ER_DUP_ENTRY") {
-                retorno({
-                    message: "ya existe un usuario con este mail",
+if (err.code === "ER_DUP_ENTRY") {
+            retorno({
+                message: "ya existe un usuario con este mail",
                     detail: err,
                 });
             } else if (err.code === "ER_NO_REFERENCED_ROW_2") {
@@ -129,7 +129,7 @@ usuariosDB.actualizar = async function (datos, id, retorno) {
 
 usuariosDB.actualizarAlumno = async function (datos, id, retorno) {
     consulta =
-        "UPDATE usuario SET email = ?, nombre = ?, apellido = ?,  password = ? WHERE id_usuario = ?";
+        "UPDATE USUARIO SET email = ?, nombre = ?, apellido = ?,  password = ? WHERE id_usuario = ?";
 
     const hashedPassword = await bcrypt.hash(datos.password, 10);
 
@@ -152,8 +152,8 @@ usuariosDB.actualizarAlumno = async function (datos, id, retorno) {
                 retorno({
                     message: "No existe este curso o rol",
                     detail: err,
-                });
-            } else retorno(err)
+            });
+} else retorno(err)
         } else if (result.affectedRows == 0) {
             retorno(null, {
                 message:
@@ -171,35 +171,35 @@ usuariosDB.actualizarAlumno = async function (datos, id, retorno) {
 
 
 
-//borrar
+//borrar 
 usuariosDB.borrar = function (id, resultado) {
-    connection.query(
-        "DELETE FROM usuario WHERE id_usuario = ? ",
+   connection.query(
+        "DELETE FROM USUARIO WHERE id_usuario = ? ",
         id,
         (err, result) => {
-            if (err) {
-                resultado({ menssage: err.code, detail: err });
-            } else {
-                if (result.affectedRows == 0) {
-                    resultado(undefined, {
+        if (err) {
+            resultado({ menssage: err.code, detail: err });
+        } else {
+            if (result.affectedRows == 0) {
+                resultado(undefined, {
                         message:
                             "No se encontro un usuario con el id ingresado",
                         detail: result,
                     });
-                } else {
-                    resultado(undefined, {
+            } else {
+                resultado(undefined, {
                         message: "Usuario eliminado",
                         detail: result,
                     });
-                }
             }
         }
+    }
     );
 };
 
 //get contraseña para compararla en la autenticacion con la contraseña recibida
 usuariosDB.getPwdByNick = function (email, callBack) {
-    const consulta = "SELECT password FROM usuario WHERE email = ?;";
+    const consulta = "SELECT password FROM USUARIO WHERE email = ?;";
     connection.query(consulta, email, (err, result) => {
         if (err) return callBack(err);
         callBack(null, result);
