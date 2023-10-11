@@ -66,7 +66,7 @@ usuariosDB.crear = async function (datos, resultado) {
 
 // ver
 usuariosDB.getAll = function (resultado) {
-    var consulta = "SELECT * FROM usuario";
+    var consulta = "SELECT id_usuario, usuario.nombre, apellido, dni, email, rol.nombre as rol FROM usuario inner join rol on rol.id_rol=usuario.id_rol order by id_usuario";
     connection.query(consulta, function (err, rows) {
         if (err) {
             resultado({

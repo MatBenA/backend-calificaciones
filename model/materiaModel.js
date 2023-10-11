@@ -41,7 +41,7 @@ materiaDB.create = function (materiaData, callBack) {
 
 materiaDB.getAll = function (callBack) {
     
-    var request = "SELECT id_materia, materia.nombre , usuario.apellido ,usuario.nombre  ,curso.nombre FROM materia inner join usuario on usuario.id_usuario=materia.id_usuario inner join curso on materia.id_curso=curso.id_curso";
+    var request = "SELECT id_materia, materia.nombre as materia , usuario.apellido ,usuario.nombre    ,curso.nombre as curso FROM materia inner join usuario on usuario.id_usuario=materia.id_usuario inner join curso on materia.id_curso=curso.id_curso";
 
     connection.query(request, (err, result) => {
         if (err) {
