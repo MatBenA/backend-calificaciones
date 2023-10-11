@@ -2,7 +2,7 @@
 //la base de datos y de la logica para enviar estos datos
 
 //configuracion inicial
-const mysql = require("mysql");
+const mysql = require("mysql2");
 const config = require("../configDB");
 const bcrypt = require("bcrypt");
 
@@ -79,6 +79,20 @@ usuariosDB.getAll = function (resultado) {
     });
 };
 
+usuariosDB.getById = function (ID,resultado) {
+    var consulta = "SELECT * FROM USUARIO WHERE id_usuario=?";
+    connection.query(consulta,ID, function (err, rows) {
+        if (err) {
+            resultado({
+                message: "No se pudo mostrar los usuarios",
+                detail: err,
+            });
+        } else {
+            resultado(undefined, rows);
+        }
+    });
+};
+
 //actualizar
 usuariosDB.actualizar = async function (datos, id, retorno) {
     consulta =
@@ -118,7 +132,7 @@ if (err.code === "ER_DUP_ENTRY") {
             });
         } else {
             retorno(null, {
-                message: `Se modificó el usuario con id ${datos.id} nombre: ${datos.nombre}`,
+                message: "Se modificó el usuario",
                 detail: result,
             });
         }
