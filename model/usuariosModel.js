@@ -79,19 +79,7 @@ usuariosDB.getAll = function (resultado) {
     });
 };
 
-usuariosDB.getById = function (ID,resultado) {
-    var consulta = "SELECT * FROM USUARIO WHERE id_usuario=?";
-    connection.query(consulta,ID, function (err, rows) {
-        if (err) {
-            resultado({
-                message: "No se pudo mostrar los usuarios",
-                detail: err,
-            });
-        } else {
-            resultado(undefined, rows);
-        }
-    });
-};
+
 
 //actualizar
 usuariosDB.actualizar = async function (datos, id, retorno) {

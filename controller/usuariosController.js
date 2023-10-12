@@ -18,7 +18,7 @@ app.post("/api/usuarios", crear);
 app.put("/api/usuarios/:id_usuario", actualizar);
 app.delete("/api/usuarios/:id_usuario", borrar);
 app.put("/api/usuarios/editar/:id_usuario", actualizarAlumno);
-app.get("/api/usuarios/:id_usuario", getById);
+
 
 function getAll(req, res) {
     usuariosDB.getAll(function (err, resultado) {
@@ -30,18 +30,7 @@ function getAll(req, res) {
     });
 }
 
-function getById(req, res) {
-  
-    let id = req.params.id_usuario;
-    usuariosDB.getById( id, (err, resultado) => {
-        if (err) {
-            res.status(500).send(err);
-        
-        } else {
-            res.send(resultado);
-        }
-    });
-}
+
 
 function crear(req, res) {
     let user = req.body;
