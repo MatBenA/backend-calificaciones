@@ -209,5 +209,23 @@ usuariosDB.getPwdByNick = function (email, callBack) {
 };
 
 //get usuario y id
+usuariosDB.getUsuarioPorId = function (id_usuario, resultado) {
+    var consulta = "SELECT id_usuario, USUARIO.nombre, apellido, dni, email, ROL.nombre as rol FROM USUARIO INNER JOIN ROL ON ROL.id_rol = USUARIO.id_rol WHERE id_usuario = ?;";
+    connection.query(consulta, [id_usuario], function (err, rows) {
+        if (err) {
+            resultado({
+                message: "No se pudo obtener el usuario",
+                detail: err,
+            });
+        } else {
+            if (rows.length === 1) {
+                resultado(undefined, rows[0]); // Devuelve el primer usuario encontrado
+            } else {
+                resultado({ message: "Usuario no encontrado" });
+            }
+        }
+    });
+};
+
 
 module.exports = usuariosDB;

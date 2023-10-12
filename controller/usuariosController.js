@@ -14,6 +14,7 @@ const usuariosDB = require("../model/usuariosModel.js");
 module.exports = app;
 
 app.get("/api/usuarios", getAll);
+app.get("/api/usuarios/:id_usuario", getUsuarioPorId);
 app.post("/api/usuarios", crear);
 app.put("/api/usuarios/:id_usuario", actualizar);
 app.delete("/api/usuarios/:id_usuario", borrar);
@@ -84,3 +85,16 @@ function borrar(req, res) {
         }
     });
 }
+
+function getUsuarioPorId(req, res) {
+    const id_usuario = req.params.id_usuario;
+    usuariosDB.getUsuarioPorId(id_usuario, (err, resultado) => {
+      if (err) {
+        res.status(500).send(err);
+      } else if (!resultado) {
+        res.status(404).send("Usuario no encontrado");
+      } else {
+        res.json(resultado);
+      }
+    });
+  }
