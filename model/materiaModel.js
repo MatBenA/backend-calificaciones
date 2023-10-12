@@ -53,7 +53,7 @@ materiaDB.getAll = function (callBack) {
 };
 
 materiaDB.delete = function (id_materia, callBack) {
-    const request = "DELETE FROM materia WHERE id_materia = ?;";
+    const request = "DELETE FROM MATERIA WHERE id_materia = ?;";
     connection.query(request, id_materia, (err, result) => {
         if (err) {
             callBack(err);
@@ -72,7 +72,7 @@ materiaDB.delete = function (id_materia, callBack) {
 };
 
 materiaDB.update = function (id_materia, newName, callBack) {
-    const request = "UPDATE materia SET nombre = ? WHERE id_materia = ?;";
+    const request = "UPDATE MATERIA SET nombre = ? WHERE id_materia = ?;";
     connection.query(request, [newName.nombre, id_materia], (err, result) => {
         if (err) {
             callBack(err);
