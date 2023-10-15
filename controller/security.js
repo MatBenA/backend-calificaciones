@@ -33,7 +33,7 @@ function login(req, res) {
         //entrada <- nickname, correo, user_id
         //salida -> enviar token
 
-        const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET);
+        const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "30m"});
         return res.json({ accessToken });
     });
 }
