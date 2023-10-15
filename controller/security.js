@@ -13,6 +13,7 @@ function login(req, res) {
 
     //validacion de contraseña
     usuariosDB.getPwdByNick(email, async (err, result) => {
+        console.log(result)
         if (err)
             return res
                 .status(500)
@@ -21,14 +22,15 @@ function login(req, res) {
             return res.status(404).send("No existe este usuario.");
         const match = await bcrypt.compare(password, result[0].password);
         if (!match) return res.status(403).send("Email o contraseña inválida.");
-
-
+       
+         
         //Generacion de Token JWT
         //entrada <- nickname, correo, user_id
         //salida -> enviar token
 
-        const accessToken = jwt.sign(email, process.env.ACCESS_TOKEN_SECRET);
+        const accessToken = jwt.sign(result[0], process.env.ACCESS_TOKEN_SECRET);
         return res.json({accessToken});
+    
     });
 }
 

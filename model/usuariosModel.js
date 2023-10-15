@@ -201,7 +201,7 @@ usuariosDB.borrar = function (id, resultado) {
 
 //get contraseña para compararla en la autenticacion con la contraseña recibida
 usuariosDB.getPwdByNick = function (email, callBack) {
-    const consulta = "SELECT password FROM USUARIO WHERE email = ?;";
+    const consulta = "SELECT * FROM USUARIO WHERE email = ?;";
     connection.query(consulta, email, (err, result) => {
         if (err) return callBack(err);
         callBack(null, result);
@@ -211,7 +211,7 @@ usuariosDB.getPwdByNick = function (email, callBack) {
 //get usuario y id
 usuariosDB.getUsuarioPorId = function (id_usuario, resultado) {
     var consulta = "SELECT id_usuario, USUARIO.nombre, apellido, dni, email, ROL.nombre as rol FROM USUARIO INNER JOIN ROL ON ROL.id_rol = USUARIO.id_rol WHERE id_usuario = ?;";
-    connection.query(consulta, [id_usuario], function (err, rows) {
+    connection.query(consulta, id_usuario, function (err, rows) {
         if (err) {
             resultado({
                 message: "No se pudo obtener el usuario",
@@ -219,7 +219,7 @@ usuariosDB.getUsuarioPorId = function (id_usuario, resultado) {
             });
         } else {
             if (rows.length === 1) {
-                resultado(undefined, rows[0]); // Devuelve el primer usuario encontrado
+                resultado(undefined, rows); // Devuelve el primer usuario encontrado
             } else {
                 resultado({ message: "Usuario no encontrado" });
             }
