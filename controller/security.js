@@ -23,12 +23,17 @@ function login(req, res) {
         const match = await bcrypt.compare(password, result[0].password);
         if (!match) return res.status(403).send("Email o contraseña inválida.");
        
-         
+         let user={
+            id_rol:result.id_rol,
+            id_usuario:result.id_usuario,
+            email:result.email,
+
+         }
         //Generacion de Token JWT
         //entrada <- nickname, correo, user_id
         //salida -> enviar token
 
-        const accessToken = jwt.sign(result[0], process.env.ACCESS_TOKEN_SECRET);
+        const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET);
         return res.json({ accessToken });
     });
 }
@@ -37,7 +42,7 @@ function verifyToken(req, res, next) {
     const token = req.get("authorization");
     if (!token) return res.status(401).send("No hay token de acceso");
     jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
-        if (err) return res.statu(403).send("Ocurrió un error");
+        if (err) return res.status(403).send("Ocurrió un error");
         req.user = user;
         next();
     

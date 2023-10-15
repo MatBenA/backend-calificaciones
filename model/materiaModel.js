@@ -2,7 +2,7 @@
 //la base de datos y de la logica para enviar estos datos
 
 //configuracion inicial
-const mysql = require("mysql");
+const mysql = require("mysql2");
 const config = require("../configDB");
 
 //Se inicia la coneccion con la base de datos
