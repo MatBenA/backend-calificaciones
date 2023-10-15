@@ -5,10 +5,13 @@
 const express = require("express");
 const app = express();
 
+//verificador de token
+const security = require("./security");
+
 //importacion de los métodos del modelo materia que se encargará de interactuar con la base de datos
 const materiaDB = require("../model/materiaModel");
 
-app.post("/api/materia", (req, res) => {
+app.post("/api/materia", security.verifyToken, (req, res) => {
     materiaDB.create(req.body, (err, result) => {
         if (err) {
             res.status(500).send(err);
@@ -18,7 +21,7 @@ app.post("/api/materia", (req, res) => {
     });
 });
 
-app.get("/api/materia", (req, res) => {
+app.get("/api/materia", security.verifyToken, (req, res) => {
     materiaDB.getAll((err, result) => {
         if (err) {
             res.status(500).send(err);
@@ -28,7 +31,7 @@ app.get("/api/materia", (req, res) => {
     });
 });
 
-app.delete("/api/materia/:id_materia", (req, res) => {
+app.delete("/api/materia/:id_materia", security.verifyToken, (req, res) => {
     materiaDB.delete(req.params.id_materia, (err, result) => {
         if (err) {
             res.status(500).send(err);
@@ -40,7 +43,7 @@ app.delete("/api/materia/:id_materia", (req, res) => {
     });
 });
 
-app.put("/api/materia/:id_materia", (req, res) => {
+app.put("/api/materia/:id_materia", security.verifyToken, (req, res) => {
     materiaDB.update(req.params.id_materia, req.body, (err, result) => {
         if (err) {
             res.status(500).send(err);

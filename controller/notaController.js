@@ -6,20 +6,26 @@
 const express = require("express");
 const app = express();
 
-//importacion de los métodos del modelo persona que se encargará de interactuar con la base de datos
+//metodo verificar token
+const security = require("./security");
 
+//importacion de los métodos del modelo persona que se encargará de interactuar con la base de datos
 const notaDB = require("../model/notaModel.js");
 
 //se exporta app para que pueda ser utilizada en el index
 module.exports = app;
 
-app.get("/api/nota", getAll);
-app.post("/api/nota", crear);
-app.put("/api/nota/:id_materia/:id_usuario", actualizar);
-app.delete("/api/nota/:id_materia/:id_usuario", borrar);
-app.get("/api/nota/:id_usuario", getByUser);
-app.get("/api/nota/:id_materia", getByMateria);
-app.get("/api/nota/:id_materia/:id_usuario", getByAlumnoAndMateria);
+app.get("/api/nota", security.verifyToken, getAll);
+app.post("/api/nota", security.verifyToken, crear);
+app.put("/api/nota/:id_materia/:id_usuario", security.verifyToken, actualizar);
+app.delete("/api/nota/:id_materia/:id_usuario", security.verifyToken, borrar);
+app.get("/api/nota/:id_usuario", security.verifyToken, getByUser);
+app.get("/api/nota/:id_materia", security.verifyToken, getByMateria);
+app.get(
+    "/api/nota/:id_materia/:id_usuario",
+    security.verifyToken,
+    getByAlumnoAndMateria
+);
 
 //ver todas las notas
 function getAll(req, res) {
