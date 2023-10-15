@@ -29,9 +29,19 @@ function login(req, res) {
         //salida -> enviar token
 
         const accessToken = jwt.sign(result[0], process.env.ACCESS_TOKEN_SECRET);
-        return res.json({accessToken});
+        return res.json({ accessToken });
+    });
+}
+
+function verifyToken(req, res, next) {
+    const token = req.get("authorization");
+    if (!token) return res.status(401).send("No hay token de acceso");
+    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
+        if (err) return res.statu(403).send("Ocurrió un error");
+        req.user = user;
+        next();
     
     });
 }
 
-module.exports = app;
+module.exports = { app, verifyToken };
