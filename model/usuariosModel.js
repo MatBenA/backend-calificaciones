@@ -201,7 +201,7 @@ usuariosDB.borrar = function (id, resultado) {
 
 //get contraseña para compararla en la autenticacion con la contraseña recibida
 usuariosDB.getPwdByNick = function (email, callBack) {
-    const consulta = "SELECT * FROM USUARIO WHERE email = ?;";
+    const consulta = "SELECT id_rol, id_usuario, email, nombre, id_curso FROM USUARIO WHERE email = ?;";
     connection.query(consulta, email, (err, result) => {
         if (err) return callBack(err);
         callBack(null, result);
