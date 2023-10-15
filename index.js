@@ -23,7 +23,7 @@ app.use(materiaController);
 app.use(usuariosController);
 app.use(cursoController);
 app.use(notaController);
-app.use(security);
+app.use(security.app);
 
 //a la escucha de solicitudes en el puerto configurado
 app.listen(config.server.port, (err) => {

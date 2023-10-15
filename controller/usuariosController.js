@@ -6,20 +6,25 @@
 const express = require("express");
 const app = express();
 
-//importacion de los métodos del modelo persona que se encargará de interactuar con la base de datos
+//seguridad para verificacion de usuario
+const security = require("./security");
 
+//importacion de los métodos del modelo persona que se encargará de interactuar con la base de datos
 const usuariosDB = require("../model/usuariosModel.js");
 
 //se exporta app para que pueda ser utilizada en el index
 module.exports = app;
 
-app.get("/api/usuarios", getAll);
-app.get("/api/usuarios/:id_usuario", getUsuarioPorId);
+app.get("/api/usuarios", security.verifyToken, getAll);
+app.get("/api/usuarios/:id_usuario", security.verifyToken, getUsuarioPorId);
 app.post("/api/usuarios", crear);
-app.put("/api/usuarios/:id_usuario", actualizar);
-app.delete("/api/usuarios/:id_usuario", borrar);
-app.put("/api/usuarios/editar/:id_usuario", actualizarAlumno);
-
+app.put("/api/usuarios/:id_usuario", security.verifyToken, actualizar);
+app.delete("/api/usuarios/:id_usuario", security.verifyToken, borrar);
+app.put(
+    "/api/usuarios/editar/:id_usuario",
+    security.verifyToken,
+    actualizarAlumno
+);
 
 function getAll(req, res) {
     usuariosDB.getAll(function (err, resultado) {
@@ -30,8 +35,6 @@ function getAll(req, res) {
         }
     });
 }
-
-
 
 function crear(req, res) {
     let user = req.body;
@@ -89,12 +92,12 @@ function borrar(req, res) {
 function getUsuarioPorId(req, res) {
     const id_usuario = req.params.id_usuario;
     usuariosDB.getUsuarioPorId(id_usuario, (err, resultado) => {
-      if (err) {
-        res.status(500).send(err);
-      } else if (!resultado) {
-        res.status(404).send("Usuario no encontrado");
-      } else {
-        res.json(resultado);
-      }
+        if (err) {
+            res.status(500).send(err);
+        } else if (!resultado) {
+            res.status(404).send("Usuario no encontrado");
+        } else {
+            res.json(resultado);
+        }
     });
-  }
+}
