@@ -14,7 +14,7 @@ connection.connect((err) => {
 const cursoDB = {};
 
 cursoDB.create = function (nombre, callBack) {
-    const request = "INSERT INTO curso (nombre) VALUES (?);";
+    const request = "INSERT INTO CURSO (nombre) VALUES (?);";
     connection.query(request, nombre, (err, result) => {
         if (err) {
             if (err.code === "ER_DUP_ENTRY") {
@@ -32,7 +32,7 @@ cursoDB.create = function (nombre, callBack) {
 };
 
 cursoDB.readAll = function (callBack) {
-    const request = "SELECT * FROM curso;";
+    const request = "SELECT * FROM CURSO;";
     connection.query(request, (err, result) => {
         if (err) {
             callBack(err);
@@ -43,7 +43,7 @@ cursoDB.readAll = function (callBack) {
 };
 
 cursoDB.update = function (nombre, id_curso, callBack) {
-    const request = "UPDATE curso SET nombre = ? WHERE id_curso = ?;";
+    const request = "UPDATE CURSO SET nombre = ? WHERE id_curso = ?;";
     connection.query(request, [nombre, id_curso], (err, result) => {
         if (err) {
             callBack(err);
@@ -62,7 +62,7 @@ cursoDB.update = function (nombre, id_curso, callBack) {
 };
 
 cursoDB.delete = function (id_curso, callBack) {
-    const request = "DELETE FROM curso WHERE id_curso = ?;";
+    const request = "DELETE FROM CURSO WHERE id_curso = ?;";
     connection.query(request, id_curso, (err, result) => {
         if (err) {
             callBack(err);

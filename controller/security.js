@@ -27,13 +27,14 @@ function login(req, res) {
             id_rol:result.id_rol,
             id_usuario:result.id_usuario,
             email:result.email,
+        
 
          }
         //Generacion de Token JWT
         //entrada <- nickname, correo, user_id
         //salida -> enviar token
 
-        const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "30m"});
+        const accessToken = jwt.sign(result[0], process.env.ACCESS_TOKEN_SECRET, { expiresIn: "30m"});
         return res.json({ accessToken });
     });
 }
