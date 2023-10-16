@@ -7,7 +7,7 @@ const config = require("./configDB"); //configuracion de la base de datos
 
 
 app.use(cors({
-    origin:'http://localhost:3001'
+    origin:'http://localhost:3000'
 }));
 
 

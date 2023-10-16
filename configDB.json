@@ -2,10 +2,10 @@
     "database": {
         "host": "localhost",
         "user": "root",
-        "password": "1234",
+        "password": "andres123",
         "database": "calificaciones"
     },
     "server": {
-        "port": 3000
+        "port": 8080
     }
 }
