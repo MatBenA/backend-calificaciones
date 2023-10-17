@@ -55,5 +55,14 @@ app.put("/api/materia/:id_materia", security.verifyToken, (req, res) => {
     });
 });
 
+app.get("/api/materia/profesor-materias", security.verifyToken, (req, res) => {
+    const id_profesor = req.body.id_profesor;
+    materiaDB.getMateriaOfProfesor(id_profesor, (err, result) => {
+        if (err) return res.status(500).send(err);
+        if (result.affectedRows === 0) return res.status(404).send("Not found");
+        res.send(result);
+    });
+});
+
 //se exporta app para que pueda ser utilizada en el index
 module.exports = app;

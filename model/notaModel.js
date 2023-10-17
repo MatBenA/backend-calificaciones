@@ -26,7 +26,7 @@ const notasDB = {};
 notasDB.crear = function (datos, resultado) {
  
 
-    const consulta = `INSERT INTO notas (periodo_1,periodo_2,periodo_3, id_materia, id_usuario ) VALUES (?,?,?,?,?);`;
+    const consulta = `INSERT INTO NOTAS (periodo_1, periodo_2, periodo_3, id_materia, id_usuario ) VALUES (?,?,?,?,?);`;
     const datosArray = [
         datos.periodo_1,
         datos.periodo_2,
@@ -51,7 +51,7 @@ notasDB.crear = function (datos, resultado) {
 
 // ver todas las notass
 notasDB.getAll = function (id,resultado) {
-    var consulta = "SELECT  usuario.apellido ,usuario.nombre  ,materia.nombre as materia  ,periodo_1 , periodo_2, periodo_3 FROM notas inner join usuario on usuario.id_usuario=notas.id_usuario inner join materia on materia.id_materia=notas.id_materia where materia.id_usuario=?";
+    var consulta = "SELECT  USUARIO.apellido ,USUARIO.nombre  ,MATERIA.nombre as materia ,periodo_1 , periodo_2, periodo_3 FROM NOTAS INNER JOIN USUARIO ON USUARIO.id_usuario=NOTAS.id_usuario INNER JOIN MATERIA ON MATERIA.id_materia=NOTAS.id_materia where materia.id_usuario=?";
     connection.query(consulta,id, function (err, rows) {
         if (err) {
             resultado({
@@ -84,7 +84,7 @@ notasDB.getByAlumnoAndMateria = function (materia, user, resultado) {
 //ver notas por alumno
 notasDB.getByUser = function (id, resultado) {
     var consulta =
-        "  SELECT  materia.nombre as materia, periodo_1,periodo_2, periodo_3 FROM materia inner join notas  on materia.id_materia=notas.id_materia inner join usuario on usuario.id_usuario=notas.id_usuario  where usuario.id_usuario= ?"
+        "  SELECT  MATERIA.nombre as MATERIA, periodo_1,periodo_2, periodo_3 FROM MATERIA INNER JOIN NOTAS  ON MATERIA.id_materia=NOTAS.id_materia INNER JOUN USUARIO ON USUARIO.id_usuario=NOTAS.id_usuario  WHERE USUARIO.id_usuario= ?"
 
     connection.query(consulta, id, (err, rows) => {
         if (err) {
@@ -119,14 +119,17 @@ notasDB.getByMateria = function (id, resultado) {
 //actualizar
 
 notasDB.actualizar = function (datos, id_materia, id_usuario, retorno) {
-    const periodo = Object.keys(datos)[0];
+   
     consulta = `UPDATE notas SET periodo_1=?,periodo_2=?,periodo_3=?, id_materia=?, id_usuario=? WHERE (id_usuario = ? and id_materia=?)`;
 
-    const params = Object.values(datos);
-    params.push(id_usuario);
-    params.push(id_materia);
+    const datosArray = [
+        datos.periodo_1,
+        datos.periodo_2,
+        datos.periodo_3
+       
+    ]
 
-    connection.query(consulta, params, (err, result) => {
+    connection.query(consulta, datosArray,id_materia,id_usuario, (err, result) => {
         if (err) {
             retorno({
                 message: "Error, analizar codigo error",

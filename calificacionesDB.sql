@@ -36,7 +36,7 @@ CREATE TABLE MATERIA
 (
   id_materia INT NOT NULL auto_increment,
   nombre VARCHAR(80) NOT NULL,
-  id_profesor INT NOT NULL,
+  id_usuario INT NOT NULL,
   id_curso INT NOT NULL,
    PRIMARY KEY (id_materia),
   FOREIGN KEY (id_curso) REFERENCES CURSO(id_curso),
