@@ -66,7 +66,7 @@ usuariosDB.crear = async function (datos, resultado) {
 
 // ver 
 usuariosDB.getAll = function (resultado) {
-    var consulta = "SELECT id_usuario, USUARIO.nombre, apellido, dni, email, ROL.nombre as rol FROM USUARIO INNER JOIN ROL on ROL.id_rol = USUARIO.id_rol ORDER BY id_usuario;";
+    var consulta = "SELECT id_usuario, USUARIO.nombre, USUARIO.apellido, dni, email, ROL.nombre as rol FROM USUARIO INNER JOIN ROL on ROL.id_rol = USUARIO.id_rol ORDER BY id_usuario;";
     connection.query(consulta, function (err, rows) {
         if (err) {
             resultado({

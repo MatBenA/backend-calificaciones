@@ -4,7 +4,6 @@
 //configuracion inicial
 const mysql = require("mysql2");
 const config = require("../configDB");
-const { connect } = require("../controller/materiaController");
 
 //Se inicia la coneccion con la base de datos
 const connection = mysql.createConnection(config.database);
@@ -22,13 +21,8 @@ const materiaDB = {};
 
 //aca deben ir los métodos para interactuar con la base de datos
 materiaDB.create = function (materiaData, callBack) {
-    const request =
-        "INSERT INTO MATERIA (nombre, id_usuario, id_curso) VALUES (?,?,?);";
-    materiaData = [
-        materiaData.nombre,
-        materiaData.id_profesor,
-        materiaData.id_curso,
-    ];
+    const request = "INSERT INTO MATERIA (nombre, id_usuario, id_curso) VALUES (?,?,?);";
+    materiaData=[materiaData.nombre, materiaData.id_usuario, materiaData.id_curso ];
     connection.query(request, materiaData, (err, result) => {
         if (err) {
             if (err.code === "ER_DUP_ENTRY") {
@@ -46,8 +40,8 @@ materiaDB.create = function (materiaData, callBack) {
 };
 
 materiaDB.getAll = function (callBack) {
-    var request =
-        "SELECT id_materia, MATERIA.nombre as MATERIA , USUARIO.apellido ,USUARIO.nombre    ,CURSO.nombre as CURSO FROM MATERIA INNER JOIN USUARIO on USUARIO.id_usuario=MATERIA.id_usuario INNER JOIN CURSO on MATERIA.id_curso=CURSO.id_curso";
+    
+    var request = "SELECT id_materia, MATERIA.nombre as MATERIA , USUARIO.apellido ,USUARIO.nombre    ,CURSO.nombre as CURSO FROM MATERIA INNER JOIN USUARIO on USUARIO.id_usuario=MATERIA.id_usuario INNER JOIN CURSO on MATERIA.id_curso=CURSO.id_curso";
 
     connection.query(request, (err, result) => {
         if (err) {
@@ -77,9 +71,9 @@ materiaDB.delete = function (id_materia, callBack) {
     });
 };
 
-materiaDB.update = function (id_materia, newName, callBack) {
-    const request = "UPDATE MATERIA SET nombre = ? WHERE id_materia = ?;";
-    connection.query(request, [newName.nombre, id_materia], (err, result) => {
+materiaDB.update = function (id_materia, data,  callBack) {
+    const request = "UPDATE MATERIA SET nombre = ?, id_usuario= ?,  id_curso = ? WHERE id_materia = ?;";
+    connection.query(request, [data.MATERIA, data.id_usuario, data.id_curso, id_materia], (err, result) => {
         if (err) {
             callBack(err);
         } else if (result.affectedRows === 0) {
@@ -93,14 +87,6 @@ materiaDB.update = function (id_materia, newName, callBack) {
                 detail: result,
             });
         }
-    });
-};
-
-materiaDB.getMateriaOfProfesor = function (id_profesor, callBack) {
-    const request = "SELECT * FROM materia WHERE id_usuario = ?;";
-    connection.query(request, id_profesor, (err, result) => {
-        if (err) return callBack(err);
-        return callBack(null, result);
     });
 };
 
