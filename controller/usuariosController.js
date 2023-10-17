@@ -25,6 +25,11 @@ app.put(
     security.verifyToken,
     actualizarAlumno
 );
+app.get(
+    "/api/usuarios/materia-alumno/:id_materia",
+    security.verifyToken,
+    usuarioByMateria
+);
 
 function getAll(req, res) {
     usuariosDB.getAll(function (err, resultado) {
@@ -99,5 +104,14 @@ function getUsuarioPorId(req, res) {
         } else {
             res.json(resultado);
         }
+    });
+}
+
+function usuarioByMateria(req, res) {
+    const id_materia = req.params.id_materia;
+    usuariosDB.userByMateria(id_materia, (err, result) => {
+        if (err) return res.status(500).send(err);
+        if (result.affectedRows === 0) return res.status(404).send("Not found");
+        return res.send(result);
     });
 }

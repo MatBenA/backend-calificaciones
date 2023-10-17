@@ -22,7 +22,7 @@ const usuariosDB = {};
 
 //aca deben ir los métodos para interactuar con la base de datos
 
-//crear 
+//crear
 usuariosDB.crear = async function (datos, resultado) {
     const hashedPassword = await bcrypt.hash(datos.password, 10);
     consulta =
@@ -64,9 +64,10 @@ usuariosDB.crear = async function (datos, resultado) {
     });
 };
 
-// ver 
+// ver
 usuariosDB.getAll = function (resultado) {
-    var consulta = "SELECT id_usuario, USUARIO.nombre, USUARIO.apellido, dni, email, ROL.nombre as rol FROM USUARIO INNER JOIN ROL on ROL.id_rol = USUARIO.id_rol ORDER BY id_usuario;";
+    var consulta =
+        "SELECT id_usuario, USUARIO.nombre, USUARIO.apellido, dni, email, ROL.nombre as rol FROM USUARIO INNER JOIN ROL on ROL.id_rol = USUARIO.id_rol ORDER BY id_usuario;";
     connection.query(consulta, function (err, rows) {
         if (err) {
             resultado({
@@ -79,13 +80,11 @@ usuariosDB.getAll = function (resultado) {
     });
 };
 
-
-
 //actualizar
 usuariosDB.actualizar = async function (datos, id, retorno) {
     consulta =
         "UPDATE USUARIO SET email = ?, nombre = ?, apellido = ?, dni = ?, password = ?, id_rol = ?, id_curso = ? WHERE id_usuario = ?";
-    
+
     const hashedPassword = await bcrypt.hash(datos.password, 10);
 
     params = [
@@ -101,9 +100,9 @@ usuariosDB.actualizar = async function (datos, id, retorno) {
 
     connection.query(consulta, params, (err, result) => {
         if (err) {
-if (err.code === "ER_DUP_ENTRY") {
-            retorno({
-                message: "ya existe un usuario con este mail",
+            if (err.code === "ER_DUP_ENTRY") {
+                retorno({
+                    message: "ya existe un usuario con este mail",
                     detail: err,
                 });
             } else if (err.code === "ER_NO_REFERENCED_ROW_2") {
@@ -111,7 +110,7 @@ if (err.code === "ER_DUP_ENTRY") {
                     message: "No existe este curso o rol",
                     detail: err,
                 });
-            } else retorno(err)
+            } else retorno(err);
         } else if (result.affectedRows == 0) {
             retorno(null, {
                 message:
@@ -135,13 +134,7 @@ usuariosDB.actualizarAlumno = async function (datos, id, retorno) {
 
     const hashedPassword = await bcrypt.hash(datos.password, 10);
 
-    params = [
-        datos.email,
-        datos.nombre,
-        datos.apellido,
-        hashedPassword,
-        id,
-    ];
+    params = [datos.email, datos.nombre, datos.apellido, hashedPassword, id];
 
     connection.query(consulta, params, (err, result) => {
         if (err) {
@@ -154,8 +147,8 @@ usuariosDB.actualizarAlumno = async function (datos, id, retorno) {
                 retorno({
                     message: "No existe este curso o rol",
                     detail: err,
-            });
-} else retorno(err)
+                });
+            } else retorno(err);
         } else if (result.affectedRows == 0) {
             retorno(null, {
                 message:
@@ -171,37 +164,36 @@ usuariosDB.actualizarAlumno = async function (datos, id, retorno) {
     });
 };
 
-
-
-//borrar 
+//borrar
 usuariosDB.borrar = function (id, resultado) {
-   connection.query(
+    connection.query(
         "DELETE FROM USUARIO WHERE id_usuario = ? ",
         id,
         (err, result) => {
-        if (err) {
-            resultado({ menssage: err.code, detail: err });
-        } else {
-            if (result.affectedRows == 0) {
-                resultado(undefined, {
+            if (err) {
+                resultado({ menssage: err.code, detail: err });
+            } else {
+                if (result.affectedRows == 0) {
+                    resultado(undefined, {
                         message:
                             "No se encontro un usuario con el id ingresado",
                         detail: result,
                     });
-            } else {
-                resultado(undefined, {
+                } else {
+                    resultado(undefined, {
                         message: "Usuario eliminado",
                         detail: result,
                     });
+                }
             }
         }
-    }
     );
 };
 
 //get contraseña para compararla en la autenticacion con la contraseña recibida
 usuariosDB.getPwdByNick = function (email, callBack) {
-    const consulta = "SELECT password, id_rol, id_usuario, email, nombre, id_curso FROM USUARIO WHERE email = ?;";
+    const consulta =
+        "SELECT password, id_rol, id_usuario, email, nombre, id_curso FROM USUARIO WHERE email = ?;";
     connection.query(consulta, email, (err, result) => {
         if (err) return callBack(err);
         callBack(null, result);
@@ -210,7 +202,8 @@ usuariosDB.getPwdByNick = function (email, callBack) {
 
 //get usuario y id
 usuariosDB.getUsuarioPorId = function (id_usuario, resultado) {
-    var consulta = "SELECT id_usuario, USUARIO.nombre, apellido, dni, email, ROL.nombre as rol FROM USUARIO INNER JOIN ROL ON ROL.id_rol = USUARIO.id_rol WHERE id_usuario = ?;";
+    var consulta =
+        "SELECT id_usuario, USUARIO.nombre, apellido, dni, email, ROL.nombre as rol FROM USUARIO INNER JOIN ROL ON ROL.id_rol = USUARIO.id_rol WHERE id_usuario = ?;";
     connection.query(consulta, id_usuario, function (err, rows) {
         if (err) {
             resultado({
@@ -227,5 +220,14 @@ usuariosDB.getUsuarioPorId = function (id_usuario, resultado) {
     });
 };
 
+usuariosDB.userByMateria = function (id_materia, callBack) {
+    const request =
+        "SELECT usuario.apellido as alumno , materia.nombre as materia, curso.nombre as curso FROM curso inner join usuario on usuario.id_curso=curso.id_curso inner join materia on materia.id_curso=usuario.id_curso where materia.id_materia= ?;";
+
+    connection.query(request, id_materia, (err, result) => {
+        if (err) return callBack(err);
+        callBack(null, result);
+    });
+};
 
 module.exports = usuariosDB;
