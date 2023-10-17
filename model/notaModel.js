@@ -65,21 +65,21 @@ notasDB.getAll = function (id,resultado) {
 };
 
 //consulta del profesor de notas por alumno por materia
-notasDB.getByAlumnoAndMateria = function (materia, user, resultado) {
-    var consulta =
-        "SELECT  usuario.nickname as alumno,materia.nombre as materia, calificacion FROM materia inner join calificacion inner join usuario on materia.id_materia=cursa.id_materia and usuario.id_usuario=cursa.id_usuario where usuario.id_usuario =? and materia.id_materia=?";
+// notasDB.getByAlumnoAndMateria = function (materia, user, resultado) {
+//     var consulta =
+//         "SELECT  usuario.nickname as alumno,materia.nombre as materia, calificacion FROM materia inner join calificacion inner join usuario on materia.id_materia=cursa.id_materia and usuario.id_usuario=cursa.id_usuario where usuario.id_usuario =? and materia.id_materia=?";
 
-    connection.query(consulta, materia, user, (err, rows) => {
-        if (err) {
-            resultado({
-                message: "No se pudo mostrar los datos",
-                detail: err,
-            });
-        } else {
-            resultado(undefined, rows);
-        }
-    });
-};
+//     connection.query(consulta, materia, user, (err, rows) => {
+//         if (err) {
+//             resultado({
+//                 message: "No se pudo mostrar los datos",
+//                 detail: err,
+//             });
+//         } else {
+//             resultado(undefined, rows);
+//         }
+//     });
+// };
 
 //ver notas por alumno
 notasDB.getByUser = function (id, resultado) {
@@ -100,27 +100,27 @@ notasDB.getByUser = function (id, resultado) {
 
 //ver notas por materia
 
-notasDB.getByMateria = function (id, resultado) {
-    var consulta =
-        "SELECT nickname, notas FROM nota inner join usuario on usuario.id_usuario=cursa.id_usuario where id_materia=? ";
+// notasDB.getByMateria = function (id, resultado) {
+//     var consulta =
+//         "SELECT nickname, notas FROM nota inner join usuario on usuario.id_usuario=cursa.id_usuario where id_materia=? ";
 
-    connection.query(consulta, id, (err, rows) => {
-        if (err) {
-            resultado({
-                message: "No se pudo mostrar los datos",
-                detail: err,
-            });
-        } else {
-            resultado(undefined, rows);
-        }
-    });
-};
+//     connection.query(consulta, id, (err, rows) => {
+//         if (err) {
+//             resultado({
+//                 message: "No se pudo mostrar los datos",
+//                 detail: err,
+//             });
+//         } else {
+//             resultado(undefined, rows);
+//         }
+//     });
+// };
 
 //actualizar
 
 notasDB.actualizar = function (datos, id_materia, id_usuario, retorno) {
    
-    consulta = `UPDATE notas SET periodo_1=?,periodo_2=?,periodo_3=?, id_materia=?, id_usuario=? WHERE (id_usuario = ? and id_materia=?)`;
+    consulta = `UPDATE notas SET periodo_1=?,periodo_2=?,periodo_3=? WHERE (id_materia = ? and id_usuario=?)`;
 
     const datosArray = [
         datos.periodo_1,
