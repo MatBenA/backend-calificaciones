@@ -120,7 +120,7 @@ notasDB.getByMateria = function (id, resultado) {
 
 notasDB.actualizar = function (datos, id_materia, id_usuario, retorno) {
     const periodo = Object.keys(datos)[0];
-    consulta = `UPDATE notas SET ${periodo}=?, id_materia=?, id_usuario=? WHERE (id_usuario = ? and id_materia=?)`;
+    consulta = `UPDATE NOTAS SET ${periodo}=?, id_materia=?, id_usuario=? WHERE (id_usuario = ? AND id_materia=?)`;
 
     const params = Object.values(datos);
     params.push(id_usuario);
