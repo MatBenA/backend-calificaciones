@@ -15,7 +15,7 @@ const notaDB = require("../model/notaModel.js");
 //se exporta app para que pueda ser utilizada en el index
 module.exports = app;
 
-app.get("/api/nota", security.verifyToken, getAll);
+app.get("/api/nota/:id_usuario", security.verifyToken, getAll);
 app.post("/api/nota", security.verifyToken, crear);
 app.put("/api/nota/:id_materia/:id_usuario", security.verifyToken, actualizar);
 app.delete("/api/nota/:id_materia/:id_usuario", security.verifyToken, borrar);
@@ -29,7 +29,8 @@ app.get(
 
 //ver todas las notas
 function getAll(req, res) {
-    notaDB.getAll(function (err, resultado) {
+    let id = req.params.id_usuario;
+    notaDB.getAll(id, (err, resultado) => {
         if (err) {
             res.status(500).send(err);
         } else {
