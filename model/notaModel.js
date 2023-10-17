@@ -24,10 +24,16 @@ const notasDB = {};
 //crear
 
 notasDB.crear = function (datos, resultado) {
-    const periodo = Object.keys(datos)[0];
+ 
 
-    const consulta = `INSERT INTO notas (${periodo}, id_materia, id_usuario ) VALUES (?,?,?);`;
-    const datosArray = Object.values(datos);
+    const consulta = `INSERT INTO notas (periodo_1,periodo_2,periodo_3, id_materia, id_usuario ) VALUES (?,?,?,?,?);`;
+    const datosArray = [
+        datos.periodo_1,
+        datos.periodo_2,
+        datos.periodo_3,
+        datos.id_materia,
+        datos.id_usuario
+    ]
     connection.query(consulta, datosArray, (err, rows) => {
         if (err) {
             resultado({
@@ -45,7 +51,7 @@ notasDB.crear = function (datos, resultado) {
 
 // ver todas las notass
 notasDB.getAll = function (resultado) {
-    var consulta = "SELECT  usuario.apellido ,usuario.nombre  ,materia.nombre ,periodo_1 , periodo_2, periodo_3 FROM notas inner join usuario on usuario.id_usuario=notas.id_usuario inner join materia on materia.id_materia=notas.id_materia";
+    var consulta = "SELECT  usuario.apellido ,usuario.nombre  ,materia.nombre as materia  ,periodo_1 , periodo_2, periodo_3 FROM notas inner join usuario on usuario.id_usuario=notas.id_usuario inner join materia on materia.id_materia=notas.id_materia";
     connection.query(consulta, function (err, rows) {
         if (err) {
             resultado({
@@ -78,7 +84,7 @@ notasDB.getByAlumnoAndMateria = function (materia, user, resultado) {
 //ver notas por alumno
 notasDB.getByUser = function (id, resultado) {
     var consulta =
-        "SELECT  nombre, notas FROM materia inner join nota  on materia.id_materia=cursa.id_materia where id_usuario = ?";
+        "  SELECT  materia.nombre as materia, periodo_1,periodo_2, periodo_3 FROM materia inner join notas  on materia.id_materia=notas.id_materia inner join usuario on usuario.id_usuario=notas.id_usuario  where usuario.id_usuario= ?"
 
     connection.query(consulta, id, (err, rows) => {
         if (err) {
