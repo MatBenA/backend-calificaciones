@@ -51,7 +51,7 @@ notasDB.crear = function (datos, resultado) {
 
 // ver todas las notass
 notasDB.getAll = function (id,resultado) {
-    var consulta = "SELECT MATERIA.nombre as materia, periodo_1, periodo_2, periodo_3, MATERIA.id_materia, NOTAS.id_usuario as id_usuario, USUARIO.apellido as apellido FROM MATERIA INNER JOIN NOTAS  ON MATERIA.id_materia=NOTAS.id_materia INNER JOIN USUARIO ON USUARIO.id_usuario=NOTAS.id_usuario  WHERE MATERIA.id_usuario= ?";
+    var consulta = "SELECT MATERIA.nombre as materia, periodo_1, periodo_2, periodo_3, MATERIA.id_materia, NOTAS.id_usuario as id_usuario, USUARIO.apellido as apellido, USUARIO.nombre as nombre FROM MATERIA INNER JOIN NOTAS  ON MATERIA.id_materia=NOTAS.id_materia INNER JOIN USUARIO ON USUARIO.id_usuario=NOTAS.id_usuario  WHERE MATERIA.id_usuario= ?";
     connection.query(consulta,id, function (err, rows) {
         if (err) {
             resultado({
