@@ -55,8 +55,8 @@ app.put("/api/materia/:id_materia", security.verifyToken, (req, res) => {
     });
 });
 
-app.get("/api/materia/profesor-materias", security.verifyToken, (req, res) => {
-    const id_profesor = req.body.id_profesor;
+app.get("/api/materia/profesor-materias/:id_usuario", security.verifyToken, (req, res) => {
+    const id_profesor = req.params.id_usuario;
     materiaDB.getMateriaOfProfesor(id_profesor, (err, result) => {
         if (err) return res.status(500).send(err);
         if (result.affectedRows === 0) return res.status(404).send("Not found");

@@ -90,5 +90,21 @@ materiaDB.update = function (id_materia, data,  callBack) {
     });
 };
 
+materiaDB.getMateriaOfProfesor = function (id, resultado) {
+    var consulta =
+        "  SELECT  MATERIA.nombre as MATERIA, id_materia FROM MATERIA INNER JOIN USUARIO  ON MATERIA.id_usuario=USUARIO.id_usuario   WHERE USUARIO.id_usuario= ?"
+
+    connection.query(consulta, id, (err, rows) => {
+        if (err) {
+            resultado({
+                message: "No se pudo mostrar los datos",
+                detail: err,
+            });
+        } else {
+            resultado(undefined, rows);
+        }
+    });
+};
+
 //se exporta el objeto materiaDB con todos sus métodos para ser usado en el controlador
 module.exports = materiaDB;

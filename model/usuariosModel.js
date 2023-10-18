@@ -222,7 +222,7 @@ usuariosDB.getUsuarioPorId = function (id_usuario, resultado) {
 
 usuariosDB.userByMateria = function (id_materia, callBack) {
     const request =
-        "SELECT usuario.apellido as alumno , materia.nombre as materia, curso.nombre as curso FROM curso inner join usuario on usuario.id_curso=curso.id_curso inner join materia on materia.id_curso=usuario.id_curso where materia.id_materia= ?;";
+        "SELECT USUARIO.apellido as alumno , MATERIA.nombre AS materia, MATERIA.nombre AS curso, id_usuario FROM CURSO INNER JOIN USUARIO ON USUARIO.id_curso=CURSO.id_curso INNER JOIN MATERIA ON MATERIA.id_curso=USUARIO.id_curso WHERE MATERIA.id_materia= ?;";
 
     connection.query(request, id_materia, (err, result) => {
         if (err) return callBack(err);
