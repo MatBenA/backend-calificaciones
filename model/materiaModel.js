@@ -92,8 +92,7 @@ materiaDB.update = function (id_materia, data,  callBack) {
 
 materiaDB.getMateriaOfProfesor = function (id, resultado) {
     var consulta =
-        "  SELECT  MATERIA.nombre as MATERIA, id_materia FROM MATERIA INNER JOIN USUARIO  ON MATERIA.id_usuario=USUARIO.id_usuario   WHERE USUARIO.id_usuario= ?"
-
+        "SELECT USUARIO.apellido as apellido, USUARIO.nombre as nombre ,USUARIO.id_usuario,id_materia, MATERIA.nombre as MATERIA, CURSO.nombre as curso FROM CURSO INNER JOIN USUARIO on USUARIO.id_curso=CURSO.id_curso INNER JOIN MATERIA ON MATERIA.id_curso=USUARIO.id_curso WHERE MATERIA.id_usuario= ?;"
     connection.query(consulta, id, (err, rows) => {
         if (err) {
             resultado({
