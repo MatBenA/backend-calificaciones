@@ -51,7 +51,7 @@ notasDB.crear = function (datos, resultado) {
 
 // ver todas las notass
 notasDB.getAll = function (id,resultado) {
-    var consulta = "SELECT  USUARIO.apellido ,USUARIO.nombre  ,MATERIA.nombre as materia ,periodo_1 , periodo_2, periodo_3 FROM NOTAS INNER JOIN USUARIO ON USUARIO.id_usuario=NOTAS.id_usuario INNER JOIN MATERIA ON MATERIA.id_materia=NOTAS.id_materia WHERE MATERIA.id_usuario=?";
+    var consulta = "SELECT MATERIA.nombre as materia, periodo_1, periodo_2, periodo_3, MATERIA.id_materia, NOTAS.id_usuario as id_usuario, USUARIO.apellido as apellido FROM MATERIA INNER JOIN NOTAS  ON MATERIA.id_materia=NOTAS.id_materia INNER JOIN USUARIO ON USUARIO.id_usuario=NOTAS.id_usuario  WHERE MATERIA.id_usuario= ?";
     connection.query(consulta,id, function (err, rows) {
         if (err) {
             resultado({
@@ -64,12 +64,13 @@ notasDB.getAll = function (id,resultado) {
     });
 };
 
-//consulta del profesor de notas por alumno por materia
-// notasDB.getByAlumnoAndMateria = function (materia, user, resultado) {
-//     var consulta =
-//         "SELECT  usuario.nickname as alumno,materia.nombre as materia, calificacion FROM materia inner join calificacion inner join usuario on materia.id_materia=cursa.id_materia and usuario.id_usuario=cursa.id_usuario where usuario.id_usuario =? and materia.id_materia=?";
 
-//     connection.query(consulta, materia, user, (err, rows) => {
+//ver notas por alumno
+// notasDB.getByUser = function (id, resultado) {
+//     var consulta =
+//         " SELECT  MATERIA.nombre as MATERIA, periodo_1,periodo_2, periodo_3, MATERIA.id_materia, NOTAS.id_usuario as id_usuario FROM MATERIA  INNER JOIN NOTAS  ON MATERIA.id_materia=NOTAS.id_materia INNER JOiN USUARIO ON USUARIO.id_usuario=NOTAS.id_usuario  WHERE MATERIA.id_usuario= ?"
+
+//     connection.query(consulta, id, (err, rows) => {
 //         if (err) {
 //             resultado({
 //                 message: "No se pudo mostrar los datos",
@@ -80,23 +81,6 @@ notasDB.getAll = function (id,resultado) {
 //         }
 //     });
 // };
-
-//ver notas por alumno
-notasDB.getByUser = function (id, resultado) {
-    var consulta =
-        "  SELECT  MATERIA.nombre as MATERIA, periodo_1,periodo_2, periodo_3 FROM MATERIA INNER JOIN NOTAS  ON MATERIA.id_materia=NOTAS.id_materia INNER JOUN USUARIO ON USUARIO.id_usuario=NOTAS.id_usuario  WHERE USUARIO.id_usuario= ?"
-
-    connection.query(consulta, id, (err, rows) => {
-        if (err) {
-            resultado({
-                message: "No se pudo mostrar los datos",
-                detail: err,
-            });
-        } else {
-            resultado(undefined, rows);
-        }
-    });
-};
 
 //ver notas por materia
 
@@ -120,7 +104,7 @@ notasDB.getByUser = function (id, resultado) {
 
 notasDB.actualizar = function (datos, id_materia, id_usuario, retorno) {
    
-    consulta = `UPDATE notas SET periodo_1=?,periodo_2=?,periodo_3=? WHERE (id_materia = ? and id_usuario=?)`;
+    consulta = `UPDATE NOTAS SET periodo_1=?,periodo_2=?,periodo_3=? WHERE (id_materia = ? and id_usuario=?)`;
 
     const datosArray = [
         datos.periodo_1,
