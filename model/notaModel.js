@@ -66,21 +66,19 @@ notasDB.getAll = function (id,resultado) {
 
 
 //ver notas por alumno
- notasDB.getByUser = function (id, resultado) {
+notasDB.getByUser = function (id, resultado) {
     var consulta =
-       " SELECT  MATERIA.nombre as MATERIA, periodo_1,periodo_2, periodo_3, MATERIA.id_materia, NOTAS.id_usuario as id_usuario FROM MATERIA  INNER JOIN NOTAS  ON MATERIA.id_materia=NOTAS.id_materia INNER JOiN USUARIO ON USUARIO.id_usuario=NOTAS.id_usuario  WHERE MATERIA.id_usuario= ?"
+       "SELECT nombre, periodo_1, periodo_2, periodo_3 FROM materia INNER JOIN notas ON materia.id_materia = notas.id_materia WHERE notas.id_usuario = ?";
 
     connection.query(consulta, id, (err, rows) => {
         if (err) {
-           resultado({
-                message: "No se pudo mostrar los datos",
-               detail: err,
-            });
+            console.error(`Error : ${err}`);
+            resultado({ message: "No se pudo mostrar los datos", detail: err });
         } else {
             resultado(undefined, rows);
         }
      });
- };
+};
 
 //ver notas por materia
 

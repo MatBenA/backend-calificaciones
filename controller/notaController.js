@@ -19,8 +19,8 @@ app.get("/api/nota/:id_usuario", security.verifyToken, getAll);
 app.post("/api/nota", security.verifyToken, crear);
 app.put("/api/nota", security.verifyToken, actualizar);
 app.delete("/api/nota/:id_materia/:id_usuario", security.verifyToken, borrar);
-app.get("/api/nota/:id_usuario", security.verifyToken, getByUser);
-app.get("/api/nota/:id_materia", security.verifyToken, getByMateria);
+app.get("/api/nota/alumno/:id_usuario", security.verifyToken, getByUser);
+app.get("/api/nota/materia/:id_materia", security.verifyToken, getByMateria);
 app.get(
     "/api/nota/:id_materia/:id_usuario",
     security.verifyToken,
@@ -40,8 +40,10 @@ function getAll(req, res) {
 }
 
 //ver las notas por alumno
+
 function getByUser(req, res) {
     let id = req.params.id_usuario;
+  
     notaDB.getByUser(id, (err, resultado) => {
         if (err) {
             res.status(500).send(err);
@@ -104,8 +106,8 @@ function actualizar(req, res) {
 
 //borrar nota
 function borrar(req, res) {
-    const idMateria = parseInt(req.params.id_materia);
-    const idUser = parseInt(req.params.id_usuario);
+    const idMateria = req.params.id_materia;
+    const idUser = req.params.id_usuario;
     notaDB.borrar(idMateria, idUser, (err, resultado) => {
         if (err) return res.status(500).send(err);
         if (resultado.affectedRows === 0)
