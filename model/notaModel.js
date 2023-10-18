@@ -66,21 +66,21 @@ notasDB.getAll = function (id,resultado) {
 
 
 //ver notas por alumno
-// notasDB.getByUser = function (id, resultado) {
-//     var consulta =
-//         " SELECT  MATERIA.nombre as MATERIA, periodo_1,periodo_2, periodo_3, MATERIA.id_materia, NOTAS.id_usuario as id_usuario FROM MATERIA  INNER JOIN NOTAS  ON MATERIA.id_materia=NOTAS.id_materia INNER JOiN USUARIO ON USUARIO.id_usuario=NOTAS.id_usuario  WHERE MATERIA.id_usuario= ?"
+ notasDB.getByUser = function (id, resultado) {
+    var consulta =
+       " SELECT  MATERIA.nombre as MATERIA, periodo_1,periodo_2, periodo_3, MATERIA.id_materia, NOTAS.id_usuario as id_usuario FROM MATERIA  INNER JOIN NOTAS  ON MATERIA.id_materia=NOTAS.id_materia INNER JOiN USUARIO ON USUARIO.id_usuario=NOTAS.id_usuario  WHERE MATERIA.id_usuario= ?"
 
-//     connection.query(consulta, id, (err, rows) => {
-//         if (err) {
-//             resultado({
-//                 message: "No se pudo mostrar los datos",
-//                 detail: err,
-//             });
-//         } else {
-//             resultado(undefined, rows);
-//         }
-//     });
-// };
+    connection.query(consulta, id, (err, rows) => {
+        if (err) {
+           resultado({
+                message: "No se pudo mostrar los datos",
+               detail: err,
+            });
+        } else {
+            resultado(undefined, rows);
+        }
+     });
+ };
 
 //ver notas por materia
 
@@ -102,33 +102,27 @@ notasDB.getAll = function (id,resultado) {
 
 //actualizar
 
-notasDB.actualizar = function (datos, id_materia, id_usuario, retorno) {
-   
-    consulta = `UPDATE NOTAS SET periodo_1=?,periodo_2=?,periodo_3=? WHERE (id_materia = ? and id_usuario=?)`;
+notasDB.actualizar = function (datos, resultado) {
+ 
 
+    const consulta =  `UPDATE NOTAS SET periodo_1=?,periodo_2=?,periodo_3=? WHERE (id_materia = ? and id_usuario=?)`;
     const datosArray = [
         datos.periodo_1,
         datos.periodo_2,
-        datos.periodo_3
-       
+        datos.periodo_3,
+        datos.id_materia,
+        datos.id_usuario
     ]
-
-    connection.query(consulta, datosArray,id_materia,id_usuario, (err, result) => {
+    connection.query(consulta, datosArray, (err, rows) => {
         if (err) {
-            retorno({
-                message: "Error, analizar codigo error",
+            resultado({
+                message: "Error ",
                 detail: err,
             });
-        } else if (result.affectedRows == 0) {
-            retorno({
-                message:
-                    "No existe usuario que coincida con el criterio de busqueda",
-                detail: result,
-            });
         } else {
-            retorno(undefined, {
-                message: "Se modificó la notas",
-                detail: result,
+            resultado(undefined, {
+                message: "Se cargo la nota",
+                detail: rows,
             });
         }
     });

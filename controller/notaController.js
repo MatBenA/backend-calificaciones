@@ -17,7 +17,7 @@ module.exports = app;
 
 app.get("/api/nota/:id_usuario", security.verifyToken, getAll);
 app.post("/api/nota", security.verifyToken, crear);
-app.put("/api/nota/:id_materia/:id_usuario", security.verifyToken, actualizar);
+app.put("/api/nota", security.verifyToken, actualizar);
 app.delete("/api/nota/:id_materia/:id_usuario", security.verifyToken, borrar);
 app.get("/api/nota/:id_usuario", security.verifyToken, getByUser);
 app.get("/api/nota/:id_materia", security.verifyToken, getByMateria);
@@ -92,9 +92,8 @@ function crear(req, res) {
 //editar nota
 function actualizar(req, res) {
     let nota = req.body;
-    let id_materia = req.params.id_materia;
-    let id_usuario = req.params.id_usuario;
-    notaDB.actualizar(nota, id_materia, id_usuario, (err, resultado) => {
+   
+    notaDB.actualizar(nota, (err, resultado) => {
         if (err) {
             res.status(500).send(err);
         } else {
