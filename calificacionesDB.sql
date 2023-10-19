@@ -60,5 +60,3 @@ INSERT INTO ROL (nombre) VALUES ("admin");
 INSERT INTO ROL (nombre) VALUES ("estudiante");
 INSERT INTO ROL (nombre) VALUES ("profesor");
 
-INSERT INTO CURSO (nombre) VALUES ("Programación I");
-
