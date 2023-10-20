@@ -30,6 +30,8 @@ app.get(
     security.verifyToken,
     usuarioByMateria
 );
+app.get("/api/user/:email",  getUserByEmail);
+
 
 function getAll(req, res) {
     usuariosDB.getAll(function (err, resultado) {
@@ -107,8 +109,21 @@ function getUsuarioPorId(req, res) {
     });
 }
 
+function getUserByEmail(req, res) {
+  let email = req.params.email;
+    usuariosDB.getUserByEmail(email, (err, resultado) => {
+        if (err) {
+            res.status(500).send(err);
+        } else if (!resultado) {
+            res.status(404).send("Usuario no encontrado");
+        } else {
+            res.json(resultado);
+        }
+    });
+}
+
 function usuarioByMateria(req, res) {
-    const id_materia = req.params.id_materia;
+    let id_materia = req.params.id_materia;
     usuariosDB.userByMateria(id_materia, (err, result) => {
         if (err) return res.status(500).send(err);
         if (result.affectedRows === 0) return res.status(404).send("Not found");

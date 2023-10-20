@@ -230,4 +230,14 @@ usuariosDB.userByMateria = function (id_materia, callBack) {
     });
 };
 
+usuariosDB.getUserByEmail = function (email, callBack) {
+    const consulta =
+        "SELECT id_rol, id_usuario, nombre, apellido, id_curso FROM USUARIO WHERE email = ?;";
+    connection.query(consulta, email, (err, result) => {
+        if (err) return callBack(err);
+        callBack(null, result[0]);
+  
+    });
+};
+
 module.exports = usuariosDB;
