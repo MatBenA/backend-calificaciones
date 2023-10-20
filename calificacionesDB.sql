@@ -46,9 +46,9 @@ CREATE TABLE MATERIA
  
 CREATE TABLE NOTAS
 (
-  periodo_1 DECIMAL(4, 2),
-  periodo_2 DECIMAL(4, 2),
-  periodo_3 DECIMAL(4, 2),
+  periodo_1 FLOAT,
+  periodo_2 FLOAT,
+  periodo_3 FLOAT,
   id_materia INT NOT NULL,
   id_usuario INT NOT NULL,
   PRIMARY KEY (id_materia, id_usuario),
