@@ -30,8 +30,7 @@ app.get(
     security.verifyToken,
     usuarioByMateria
 );
-app.get("/api/user/:email",  getUserByEmail);
-
+app.get("/api/user/:email", security.verifyToken, getUserByEmail);
 
 function getAll(req, res) {
     usuariosDB.getAll(function (err, resultado) {
@@ -110,7 +109,7 @@ function getUsuarioPorId(req, res) {
 }
 
 function getUserByEmail(req, res) {
-  let email = req.params.email;
+    let email = req.params.email;
     usuariosDB.getUserByEmail(email, (err, resultado) => {
         if (err) {
             res.status(500).send(err);
