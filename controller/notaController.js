@@ -21,11 +21,7 @@ app.put("/api/nota", security.verifyToken, actualizar);
 app.delete("/api/nota/:id_materia/:id_usuario", security.verifyToken, borrar);
 app.get("/api/nota/alumno/:id_usuario", security.verifyToken, getByUser);
 app.get("/api/nota/materia/:id_materia", security.verifyToken, getByMateria);
-app.get(
-    "/api/nota/:id_materia/:id_usuario",
-    security.verifyToken,
-    getByAlumnoAndMateria
-);
+app.get("/api/nota/alumnos/:id_materia/:id_usuario",security.verifyToken, getByAlumnoAndMateria);
 
 //ver todas las notas
 function getAll(req, res) {

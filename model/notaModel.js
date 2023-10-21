@@ -137,4 +137,18 @@ notasDB.borrar = function (id_materia, id_usuario, callBack) {
     });
 };
 
+notasDB.getByAlumnoAndMateria = function (id_materia, id_usuario, resultado) {
+    const consulta =
+        "SELECT periodo_1, periodo_2, periodo_3 FROM notas WHERE id_materia = ? and id_usuario = ?;";
+    connection.query(consulta, [id_materia, id_usuario], (err, rows) => {
+        if (err) {
+            console.error(`Error : ${err}`);
+            resultado({ message: "No se pudo mostrar los datos", detail: err });
+        } else {
+            resultado(undefined, rows[0]);
+         
+        }
+     });
+};
+
 module.exports = notasDB;

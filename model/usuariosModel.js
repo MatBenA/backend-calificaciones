@@ -130,11 +130,11 @@ usuariosDB.actualizar = async function (datos, id, retorno) {
 
 usuariosDB.actualizarAlumno = async function (datos, id, retorno) {
     consulta =
-        "UPDATE USUARIO SET email = ?, nombre = ?, apellido = ?,  password = ? WHERE id_usuario = ?";
+        "UPDATE USUARIO SET nombre = ?, apellido = ?,  password = ? WHERE id_usuario = ?";
 
     const hashedPassword = await bcrypt.hash(datos.password, 10);
 
-    params = [datos.email, datos.nombre, datos.apellido, hashedPassword, id];
+    params = [ datos.nombre, datos.apellido, hashedPassword, id];
 
     connection.query(consulta, params, (err, result) => {
         if (err) {
@@ -232,7 +232,7 @@ usuariosDB.userByMateria = function (id_materia, callBack) {
 
 usuariosDB.getUserByEmail = function (email, callBack) {
     const consulta =
-        "SELECT id_rol, id_usuario, nombre, apellido, id_curso FROM USUARIO WHERE email = ?;";
+        "SELECT id_rol, id_usuario, nombre, apellido, id_curso, email FROM USUARIO WHERE email = ?;";
     connection.query(consulta, email, (err, result) => {
         if (err) return callBack(err);
         callBack(null, result[0]);
