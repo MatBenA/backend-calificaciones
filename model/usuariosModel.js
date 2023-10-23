@@ -80,6 +80,23 @@ usuariosDB.getAll = function (resultado) {
     });
 };
 
+
+usuariosDB.getProfesor = function (resultado) {
+    var consulta =
+        "SELECT id_usuario, nombre, apellido from usuario where id_rol=3";
+    connection.query(consulta, function (err, rows) {
+        if (err) {
+            resultado({
+                message: "No se pudo mostrar los usuarios",
+                detail: err,
+            });
+        } else {
+            resultado(undefined, rows);
+            console.log(rows)
+        }
+    });
+};
+
 //actualizar
 usuariosDB.actualizar = async function (datos, id, retorno) {
     consulta =

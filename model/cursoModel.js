@@ -42,6 +42,18 @@ cursoDB.readAll = function (callBack) {
     });
 };
 
+cursoDB.readNombres = function (callBack) {
+    const request = "SELECT nombre,id_curso FROM CURSO;";
+    connection.query(request, (err, result) => {
+        if (err) {
+            callBack(err);
+        } else {
+            callBack(undefined, result);
+            console.log(result)
+        }
+    });
+};
+
 cursoDB.update = function (nombre, id_curso, callBack) {
     const request = "UPDATE CURSO SET nombre = ? WHERE id_curso = ?;";
     connection.query(request, [nombre, id_curso], (err, result) => {
