@@ -25,7 +25,7 @@ const usuariosDB = {};
 //crear
 usuariosDB.crear = async function (datos, resultado) {
     const hashedPassword = await bcrypt.hash(datos.password, 10);
-    consulta =
+    const consulta =
         "INSERT INTO USUARIO (email, nombre, apellido, dni, password, id_rol, id_curso) VALUES (?,?,?,?,?,?,?);";
     params = [
         datos.email,
@@ -66,7 +66,7 @@ usuariosDB.crear = async function (datos, resultado) {
 
 // ver
 usuariosDB.getAll = function (resultado) {
-    var consulta =
+    const consulta =
         "SELECT id_usuario, USUARIO.nombre, USUARIO.apellido, dni, email, ROL.nombre as rol FROM USUARIO INNER JOIN ROL on ROL.id_rol = USUARIO.id_rol ORDER BY id_usuario;";
     connection.query(consulta, function (err, rows) {
         if (err) {
@@ -99,7 +99,7 @@ usuariosDB.getProfesor = function (resultado) {
 
 //actualizar
 usuariosDB.actualizar = async function (datos, id, retorno) {
-    consulta =
+    const consulta =
         "UPDATE USUARIO SET email = ?, nombre = ?, apellido = ?, dni = ?, password = ?, id_rol = ?, id_curso = ? WHERE id_usuario = ?";
 
     const hashedPassword = await bcrypt.hash(datos.password, 10);
@@ -146,7 +146,7 @@ usuariosDB.actualizar = async function (datos, id, retorno) {
 //actualizar siendo alumno o profesor
 
 usuariosDB.actualizarAlumno = async function (datos, id, retorno) {
-    consulta =
+    const consulta =
         "UPDATE USUARIO SET nombre = ?, apellido = ?,  password = ? WHERE id_usuario = ?";
 
     const hashedPassword = await bcrypt.hash(datos.password, 10);

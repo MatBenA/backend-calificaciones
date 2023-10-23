@@ -18,6 +18,7 @@ const usuariosController = require("./controller/usuariosController");
 const cursoController = require("./controller/cursoController");
 const notaController = require("./controller/notaController");
 const security = require("./controller/security");
+
 //ejecutamos los controladores
 app.use(materiaController);
 app.use(usuariosController);

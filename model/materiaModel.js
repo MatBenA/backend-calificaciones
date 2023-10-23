@@ -41,7 +41,7 @@ materiaDB.create = function (materiaData, callBack) {
 
 materiaDB.getAll = function (callBack) {
     
-    var request = "SELECT id_materia, MATERIA.nombre as MATERIA , USUARIO.apellido ,USUARIO.nombre    ,CURSO.nombre as CURSO FROM MATERIA INNER JOIN USUARIO on USUARIO.id_usuario=MATERIA.id_usuario INNER JOIN CURSO on MATERIA.id_curso=CURSO.id_curso";
+    const request = "SELECT id_materia, MATERIA.nombre as MATERIA , USUARIO.apellido ,USUARIO.nombre    ,CURSO.nombre as CURSO FROM MATERIA INNER JOIN USUARIO on USUARIO.id_usuario=MATERIA.id_usuario INNER JOIN CURSO on MATERIA.id_curso=CURSO.id_curso";
 
     connection.query(request, (err, result) => {
         if (err) {
@@ -91,7 +91,7 @@ materiaDB.update = function (id_materia, data,  callBack) {
 };
 
 materiaDB.getMateriaOfProfesor = function (id, resultado) {
-    var consulta =
+    const consulta =
         "SELECT USUARIO.apellido as apellido, USUARIO.nombre as nombre ,USUARIO.id_usuario,id_materia, MATERIA.nombre as MATERIA, CURSO.nombre as curso FROM CURSO INNER JOIN USUARIO on USUARIO.id_curso=CURSO.id_curso INNER JOIN MATERIA ON MATERIA.id_curso=USUARIO.id_curso WHERE MATERIA.id_usuario= ?;"
     connection.query(consulta, id, (err, rows) => {
         if (err) {
