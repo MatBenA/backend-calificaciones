@@ -30,6 +30,8 @@ app.get(
     security.verifyToken,
     usuarioByMateria
 );
+
+app.get("/api/profesor",  security.verifyToken, getProfesor);
 app.get("/api/user/:email", security.verifyToken, getUserByEmail);
 
 function getAll(req, res) {
