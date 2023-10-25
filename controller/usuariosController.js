@@ -30,6 +30,8 @@ app.get(
     security.verifyToken,
     usuarioByMateria
 );
+
+app.get("/api/profesor",  security.verifyToken, getProfesor);
 app.get("/api/user/:email", security.verifyToken, getUserByEmail);
 
 function getAll(req, res) {
@@ -41,6 +43,17 @@ function getAll(req, res) {
         }
     });
 }
+
+function getProfesor(req, res) {
+    usuariosDB.getProfesor(function (err, resultado) {
+        if (err) {
+            res.status(500).send(err);
+        } else {
+            res.json(resultado);
+        }
+    });
+}
+
 
 function crear(req, res) {
     let user = req.body;

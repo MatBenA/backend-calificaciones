@@ -27,6 +27,18 @@ app.get("/api/curso", security.verifyToken, (req, res) => {
             res.status(500).send(err);
         } else {
             res.send(result);
+         
+        }
+    });
+});
+
+app.get("/api/curso/nombres",  (req, res) => {
+    cursoDB.readNombres((err, result) => {
+        if (err) {
+            res.status(500).send(err);
+        } else {
+            res.send(result);
+         
         }
     });
 });
