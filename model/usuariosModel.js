@@ -23,11 +23,12 @@ const usuariosDB = {};
 //aca deben ir los métodos para interactuar con la base de datos
 
 //crear
+
 usuariosDB.crear = async function (datos, resultado) {
     const hashedPassword = await bcrypt.hash(datos.password, 10);
     const consulta =
-        "INSERT INTO USUARIO (email, nombre, apellido, dni, password, id_rol, id_curso) VALUES (?,?,?,?,?,?,?);";
-    params = [
+        "INSERT INTO USUARIO (email, nombre, apellido, dni, password, id_rol, id_curso, imagen) VALUES (?,?,?,?,?,?,?,?);";
+    const params = [
         datos.email,
         datos.nombre,
         datos.apellido,
@@ -35,6 +36,7 @@ usuariosDB.crear = async function (datos, resultado) {
         hashedPassword,
         datos.id_rol,
         datos.id_curso,
+        datos.imagen, 
     ];
 
     connection.query(consulta, params, (err, rows) => {
@@ -63,7 +65,6 @@ usuariosDB.crear = async function (datos, resultado) {
         }
     });
 };
-
 // ver
 usuariosDB.getAll = function (resultado) {
     const consulta =
@@ -143,43 +144,50 @@ usuariosDB.actualizar = async function (datos, id, retorno) {
     });
 };
 
+
 //actualizar siendo alumno o profesor
 
 usuariosDB.actualizarAlumno = async function (datos, id, retorno) {
     const consulta =
-        "UPDATE USUARIO SET nombre = ?, apellido = ?,  password = ? WHERE id_usuario = ?";
+        "UPDATE USUARIO SET nombre = ?, apellido = ?, password = ?, imagen = ? WHERE id_usuario = ?";
 
-    const hashedPassword = await bcrypt.hash(datos.password, 10);
+  
+        const hashedPassword = datos.password ? await bcrypt.hash(datos.password, 10) : null;
+        const params = [datos.nombre, datos.apellido, hashedPassword, datos.imagen, id];
 
-    params = [ datos.nombre, datos.apellido, hashedPassword, id];
-
-    connection.query(consulta, params, (err, result) => {
-        if (err) {
-            if (err.code === "ER_DUP_ENTRY") {
-                retorno({
-                    message: "ya existe un usuario con este mail",
-                    detail: err,
+        connection.query(consulta, params, (err, result) => {
+            if (err) {
+                if (err.code === "ER_DUP_ENTRY") {
+                    retorno({
+                        message: "Ya existe un usuario con este mail",
+                        detail: err,
+                    });
+                } else if (err.code === "ER_NO_REFERENCED_ROW_2") {
+                    retorno({
+                        message: "No existe este curso o rol",
+                        detail: err,
+                    });
+                } else {
+                    retorno({
+                        message: "Error al actualizar el usuario",
+                        detail: err,
+                    });
+                }
+            } else if (result.affectedRows === 0) {
+                retorno(null, {
+                    message: "No existe usuario que coincida con el criterio de búsqueda",
+                    detail: result,
                 });
-            } else if (err.code === "ER_NO_REFERENCED_ROW_2") {
-                retorno({
-                    message: "No existe este curso o rol",
-                    detail: err,
+            } else {
+                retorno(null, {
+                    message: "Se modificó el usuario",
+                    detail: result,
                 });
-            } else retorno(err);
-        } else if (result.affectedRows == 0) {
-            retorno(null, {
-                message:
-                    "No existe usuario que coincida con el criterio de busqueda",
-                detail: result,
-            });
-        } else {
-            retorno(null, {
-                message: "Se modificó el usuario",
-                detail: result,
-            });
-        }
-    });
+            }
+        });
+   
 };
+
 
 //borrar
 usuariosDB.borrar = function (id, resultado) {
@@ -249,7 +257,7 @@ usuariosDB.userByMateria = function (id_materia, callBack) {
 
 usuariosDB.getUserByEmail = function (email, callBack) {
     const consulta =
-        "SELECT id_rol, id_usuario, nombre, apellido, id_curso, email FROM USUARIO WHERE email = ?;";
+        "SELECT id_rol, id_usuario, nombre, apellido, id_curso, email, imagen FROM USUARIO WHERE email = ?;";
     connection.query(consulta, email, (err, result) => {
         if (err) return callBack(err);
         callBack(null, result[0]);

@@ -2,8 +2,8 @@
     "database": {
         "host": "localhost",
         "user": "root",
-        "password": "1234",
-        "database": "calificaciones"
+        "password": "",
+        "database": "calificacion"
     },
     "server": {
         "port": 8080
