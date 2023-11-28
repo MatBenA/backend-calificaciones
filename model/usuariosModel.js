@@ -93,7 +93,7 @@ usuariosDB.getProfesor = function (resultado) {
             });
         } else {
             resultado(undefined, rows);
-            console.log(rows)
+            
         }
     });
 };

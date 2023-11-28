@@ -49,7 +49,7 @@ cursoDB.readNombres = function (callBack) {
             callBack(err);
         } else {
             callBack(undefined, result);
-            console.log(result)
+           
         }
     });
 };

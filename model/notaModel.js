@@ -24,13 +24,12 @@ const notasDB = {};
 //crear
 
 notasDB.crear = function (datos, resultado) {
-    const consulta = `INSERT INTO NOTAS (periodo_1, periodo_2, periodo_3, id_materia, id_usuario ) VALUES (?,?,?,?,?);`;
+    const consulta = `INSERT INTO NOTAS (id_materia, id_usuario, descripcion, valor ) VALUES (?,?,?,?);`;
     const datosArray = [
-        datos.periodo_1,
-        datos.periodo_2,
-        datos.periodo_3,
         datos.id_materia,
         datos.id_usuario,
+        datos.descripcion,
+        datos.valor
     ];
     connection.query(consulta, datosArray, (err, rows) => {
         if (err) {
@@ -50,7 +49,7 @@ notasDB.crear = function (datos, resultado) {
 // ver todas las notass
 notasDB.getAll = function (id, resultado) {
     const consulta =
-        "SELECT MATERIA.nombre as materia, periodo_1, periodo_2, periodo_3, MATERIA.id_materia, NOTAS.id_usuario as id_usuario, USUARIO.apellido as apellido, USUARIO.nombre as nombre FROM MATERIA INNER JOIN NOTAS  ON MATERIA.id_materia=NOTAS.id_materia INNER JOIN USUARIO ON USUARIO.id_usuario=NOTAS.id_usuario  WHERE MATERIA.id_usuario= ?";
+        "SELECT MATERIA.nombre as materia, valor, descripcion, MATERIA.id_materia, NOTAS.id_usuario as id_usuario, USUARIO.apellido as apellido, USUARIO.nombre as nombre FROM MATERIA INNER JOIN NOTAS  ON MATERIA.id_materia=NOTAS.id_materia INNER JOIN USUARIO ON USUARIO.id_usuario=NOTAS.id_usuario  WHERE MATERIA.id_usuario= ?";
     connection.query(consulta, id, function (err, rows) {
         if (err) {
             resultado({
@@ -66,7 +65,7 @@ notasDB.getAll = function (id, resultado) {
 //ver notas por alumno
 notasDB.getByUser = function (id, resultado) {
     const consulta =
-        "SELECT nombre, periodo_1, periodo_2, periodo_3 FROM materia INNER JOIN notas ON materia.id_materia = notas.id_materia WHERE notas.id_usuario = ?";
+        "SELECT nombre, valor, descripcion FROM MATERIA INNER JOIN NOTAS ON MATERIA.id_materia = MATERIA.id_materia WHERE NOTAS.id_usuario = ?";
 
     connection.query(consulta, id, (err, rows) => {
         if (err) {
@@ -99,11 +98,10 @@ notasDB.getByUser = function (id, resultado) {
 //actualizar
 
 notasDB.actualizar = function (datos, resultado) {
-    const consulta = `UPDATE NOTAS SET periodo_1=?,periodo_2=?,periodo_3=? WHERE (id_materia = ? and id_usuario=?)`;
+    const consulta = `UPDATE NOTAS SET valor=?, descripcion=? WHERE (id_materia = ? and id_usuario=?)`;
     const datosArray = [
-        datos.periodo_1,
-        datos.periodo_2,
-        datos.periodo_3,
+        datos.valor,
+        datos.descripcion,
         datos.id_materia,
         datos.id_usuario,
     ];
@@ -135,7 +133,7 @@ notasDB.borrar = function (id_materia, id_usuario, callBack) {
 
 notasDB.getByAlumnoAndMateria = function (id_materia, id_usuario, resultado) {
     const consulta =
-        "SELECT periodo_1, periodo_2, periodo_3 FROM notas WHERE id_materia = ? and id_usuario = ?;";
+        "SELECT valor, descripcion FROM notas WHERE id_materia = ? and id_usuario = ?;";
     connection.query(consulta, [id_materia, id_usuario], (err, rows) => {
         if (err) {
             console.error(`Error : ${err}`);
