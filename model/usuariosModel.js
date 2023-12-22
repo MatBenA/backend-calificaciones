@@ -84,7 +84,7 @@ usuariosDB.getAll = function (resultado) {
 
 usuariosDB.getProfesor = function (resultado) {
     var consulta =
-        "SELECT id_usuario, nombre, apellido from usuario where id_rol=3";
+        "SELECT id_usuario, nombre, apellido FROM USUARIO WHERE id_rol=3";
     connection.query(consulta, function (err, rows) {
         if (err) {
             resultado({
