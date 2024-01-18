@@ -1,4 +1,4 @@
-const mysql = require("mysql2");
+const mysql = require("mysql");
 const configDB = require("../configDB.json");
 
 const connection = mysql.createConnection(configDB.database);

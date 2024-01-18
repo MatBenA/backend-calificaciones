@@ -41,6 +41,8 @@ app.get(
 app.get("/api/profesor",  security.verifyToken, getProfesor);
 app.get("/api/user/:email", security.verifyToken, getUserByEmail);
 
+app.put("/api/usuarios/:id_usuario/imagen", security.verifyToken, actualizarImagen);
+
 //se define el almacenamiento de las imagenes 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -99,55 +101,39 @@ function getProfesor(req, res) {
 
 
 function actualizar(req, res) {
-    upload.single('imagen')(req, res, function (err) {
-        if (err instanceof multer.MulterError) {
-            return res.status(500).json(err);
-        } else if (err) {
-            return res.status(500).json(err);
+    let id = req.params.id_usuario;
+    let user = req.body;
+
+    usuariosDB.actualizar(user, id, (err, resultado) => {
+        if (err) {
+            res.status(500).send(err);
+        } else if (resultado.detail.affectedRows === 0) {
+            res.status(404).send(resultado);
+        } else {
+            res.send(resultado);
         }
-
-        // Continue with user creation
-        let user = req.body;
-        user.imagen = req.file ? req.file.filename : null; // Attach the image filename to the user object
-
-        let id = req.params.id_usuario;
-        usuariosDB.actualizar(user, id, (err, resultado) => {
-            if (err) {
-                res.status(500).send(err);
-            } else if (resultado.detail.affectedRows === 0) {
-                res.status(404).send(resultado);
-            } else {
-                res.send(resultado);
-            }
-        });
     });
 }
-
-
 //actualizar siendo alumno o profesor
 function actualizarAlumno(req, res) {
-    
-    upload.single('imagen')(req, res, function (err) {
-        if (err instanceof multer.MulterError) {
-            return res.status(500).json(err);
-        } else if (err) {
-            return res.status(500).json(err);
-        }
+    let id = req.params.id_usuario; // Verifica si el ID se está obteniendo correctamente
+    let user = req.body; // Asegúrate de que los datos del usuario estén presentes en el cuerpo de la solicitud
 
-        // Continue with user creation
-        let user = req.body;
-        user.imagen = req.file ? req.file.filename : null; // Attach the image filename to the user object
-        let id = req.params.id_usuario;
-        usuariosDB.actualizarAlumno(user,id, (err, resultado) => {
-            if (err) {
-                res.status(500).send(err);
-            } else {
-                res.send(resultado);
-            }
-        });
+    // Realiza algunas verificaciones de log para entender qué datos están llegando aquí
+    console.log("ID del usuario:", id);
+    console.log("Datos del usuario:", user);
+
+    // Llama a la función actualizarAlumno del modelo usuariosDB
+    usuariosDB.actualizarAlumno(user, id, (err, resultado) => {
+        if (err) {
+            res.status(500).send(err);
+        } else if (resultado.detail.affectedRows === 0) {
+            res.status(404).send(resultado);
+        } else {
+            res.send(resultado);
+        }
     });
 }
-
 
 function borrar(req, res) {
     let usuario_eliminar = req.params.id_usuario;
@@ -196,5 +182,32 @@ function usuarioByMateria(req, res) {
         if (err) return res.status(500).send(err);
         if (result.affectedRows === 0) return res.status(404).send("Not found");
         return res.send(result);
+    });
+}
+
+//modificar foto de perfil
+
+function actualizarImagen(req, res) {
+    upload.single('imagen')(req, res, function (err) {
+        if (err instanceof multer.MulterError) {
+            return res.status(500).json(err);
+        } else if (err) {
+            return res.status(500).json(err);
+        }
+
+        // Continuar con la actualización de la imagen del usuario
+        let id = req.params.id_usuario;
+        let imagen = req.file ? req.file.filename : null; // Obtener el nombre de la imagen
+
+        // Llamar al método del modelo para actualizar la imagen
+        usuariosDB.updateImage({ id_usuario: id, imagen: imagen }, (err, resultado) => {
+            if (err) {
+                res.status(500).send(err);
+            } else if (resultado.detail.affectedRows === 0) {
+                res.status(404).send(resultado);
+            } else {
+                res.send(resultado);
+            }
+        });
     });
 }

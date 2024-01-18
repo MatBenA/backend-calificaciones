@@ -149,45 +149,49 @@ usuariosDB.actualizar = async function (datos, id, retorno) {
 
 usuariosDB.actualizarAlumno = async function (datos, id, retorno) {
     const consulta =
-        "UPDATE USUARIO SET nombre = ?, apellido = ?, password = ?, imagen = ? WHERE id_usuario = ?";
+        "UPDATE USUARIO SET nombre = ?, apellido = ?, password = ?, email= ? WHERE id_usuario = ?";
 
-  
-        const hashedPassword = datos.password ? await bcrypt.hash(datos.password, 10) : null;
-        const params = [datos.nombre, datos.apellido, hashedPassword, datos.imagen, id];
+    const hashedPassword = datos.password ? await bcrypt.hash(datos.password, 10) : null;
+    const params = [datos.nombre, datos.apellido, hashedPassword, datos.email, id];
 
-        connection.query(consulta, params, (err, result) => {
-            if (err) {
-                if (err.code === "ER_DUP_ENTRY") {
-                    retorno({
-                        message: "Ya existe un usuario con este mail",
-                        detail: err,
-                    });
-                } else if (err.code === "ER_NO_REFERENCED_ROW_2") {
-                    retorno({
-                        message: "No existe este curso o rol",
-                        detail: err,
-                    });
-                } else {
-                    retorno({
-                        message: "Error al actualizar el usuario",
-                        detail: err,
-                    });
-                }
-            } else if (result.affectedRows === 0) {
-                retorno(null, {
-                    message: "No existe usuario que coincida con el criterio de búsqueda",
-                    detail: result,
+    // Realiza algunos logs para saber si los datos están llegando correctamente a esta función
+    console.log("ID del usuario (modelo):", id);
+    console.log("Datos del usuario (modelo):", datos);
+
+    connection.query(consulta, params, (err, result) => {
+        if (err) {
+            // Agrega logs para entender qué tipo de error estás obteniendo
+            console.log("Error en la consulta SQL:", err);
+            
+            if (err.code === "ER_DUP_ENTRY") {
+                retorno({
+                    message: "Ya existe un usuario con este mail",
+                    detail: err,
+                });
+            } else if (err.code === "ER_NO_REFERENCED_ROW_2") {
+                retorno({
+                    message: "No existe este curso o rol",
+                    detail: err,
                 });
             } else {
-                retorno(null, {
-                    message: "Se modificó el usuario",
-                    detail: result,
+                retorno({
+                    message: "Error al actualizar el usuario",
+                    detail: err,
                 });
             }
-        });
-   
+        } else if (result.affectedRows === 0) {
+            retorno(null, {
+                message: "No existe usuario que coincida con el criterio de búsqueda",
+                detail: result,
+            });
+        } else {
+            retorno(null, {
+                message: "Se modificó el usuario",
+                detail: result,
+            });
+        }
+    });
 };
-
 
 //borrar
 usuariosDB.borrar = function (id, resultado) {
@@ -264,5 +268,30 @@ usuariosDB.getUserByEmail = function (email, callBack) {
   
     });
 };
+
+//modificar foto de perfil
+usuariosDB.updateImage = function (usuario, retorno) {
+    const consulta = "UPDATE USUARIO SET imagen=? WHERE ide_usuario = ?"; // Aquí es probable que sea id_usuario en lugar de ide_usuario
+    
+    const params = [
+        usuario.imagen,
+        usuario.id_usuario
+    ];
+
+    connection.query(consulta, params, (err, res) => {
+        if (err) {
+            retorno({
+                message: "Error al modificar foto de perfil",
+                detail: err,
+            });
+        } else {
+            retorno(null, {
+                message: "Se modificó la imagen",
+                detail: res,
+            });
+        }
+    });
+};
+
 
 module.exports = usuariosDB;
